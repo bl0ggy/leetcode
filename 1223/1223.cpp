@@ -1,5 +1,6 @@
 #include <cassert>
 #include <chrono>
+#include <unordered_set>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,18 +10,32 @@ using namespace std;
 class Solution {
   public:
     vector<string> removeSubfolders(vector<string> &folders) {
-        for (size_t root = 0; root < folders.size(); root++) {
-            for (size_t tested = folders.size() - 1; tested > root; tested--) {
-                if (folders[tested].size() > folders[root].size() && folders[tested].find(folders[root] + "/") == 0) {
-                    folders.erase(folders.begin() + tested);
-                } else if (folders[tested].size() < folders[root].size() && folders[root].find(folders[tested] + "/") == 0) {
-                    folders.erase(folders.begin() + root);
-                    root--;
+        unordered_set<string> folderSet(folders.begin(), folders.end());
+        vector<string> newFolders;
+        for(string & folder : folders) {
+            bool isSubfolder = false;
+            string tmp = folder;
+
+            while(!tmp.empty()) {
+                size_t pos = tmp.find_last_of("/");
+                if(pos == string::npos) { // parent folder
+                    break;
+                }
+
+                tmp = tmp.substr(0, pos);
+
+                if(folderSet.count(tmp)) {
+                    isSubfolder = true;
                     break;
                 }
             }
+
+            if(!isSubfolder) {
+                newFolders.push_back(folder);
+            }
         }
-        return folders;
+
+        return newFolders;
     }
 };
 

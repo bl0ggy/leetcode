@@ -32,3 +32,6 @@ include_directories(AFTER .)
 add_executable(1223
     1223/1223.cpp
 )
+add_executable(3276
+    3276/3276.cpp
+)

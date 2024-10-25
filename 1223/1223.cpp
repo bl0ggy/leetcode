@@ -10,28 +10,17 @@ using namespace std;
 class Solution {
   public:
     vector<string> removeSubfolders(vector<string> &folders) {
-        unordered_set<string> folderSet(folders.begin(), folders.end());
+        sort(folders.begin(), folders.end());
         vector<string> newFolders;
-        for(string & folder : folders) {
-            bool isSubfolder = false;
-            string tmp = folder;
+        newFolders.reserve(folders.size());
+        newFolders.push_back(std::move(folders[0]));
+        string lastFolder = newFolders[0] + "/";
 
-            while(!tmp.empty()) {
-                size_t pos = tmp.find_last_of("/");
-                if(pos == string::npos) { // parent folder
-                    break;
-                }
-
-                tmp = tmp.substr(0, pos);
-
-                if(folderSet.count(tmp)) {
-                    isSubfolder = true;
-                    break;
-                }
-            }
-
-            if(!isSubfolder) {
-                newFolders.push_back(folder);
+        for(int i = 1; i < folders.size(); i++) {
+            string & folder = folders[i];
+            if(folder.compare(0, lastFolder.size(), lastFolder) != 0) {
+                newFolders.push_back(std::move(folder));
+                lastFolder = newFolders.back() + "/";
             }
         }
 

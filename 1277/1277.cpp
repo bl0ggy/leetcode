@@ -10,29 +10,18 @@ class Solution {
     int countSquares(vector<vector<int>> &matrix) {
         int matrixRows = matrix.size();
         int matrixCols = matrix[0].size();
-        int kernelMaxSize = min(matrixRows, matrixCols);
         int count = 0;
+        vector<vector<int>> dp(matrixRows + 1, vector<int>(matrixCols + 1, 0));
 
-        for (int kernelSize = 1; kernelSize <= kernelMaxSize; kernelSize++) {
-            for (int mRowStart = 0; mRowStart < matrixRows - kernelSize + 1; mRowStart++) {
-                for (int mColStart = 0; mColStart < matrixCols - kernelSize + 1; mColStart++) {
-                    // cout << "rowStart=" << mRowStart << " colStart" << mColStart << "\n";
-                    bool allOnes = true;
-                    for (int mRow = mRowStart; allOnes && mRow < kernelSize + mRowStart; mRow++) {
-                        for (int mCol = mColStart; allOnes && mCol < kernelSize + mColStart; mCol++) {
-                            // cout << "mRow=" << mRow << " mCol=" << mCol << " " << matrix[mRow][mCol] << "\n";
-                            if (matrix[mRow][mCol] == 0) {
-                                allOnes = false;
-                            }
-                        }
-                    }
-                    if (allOnes) {
-                        count++;
-                    }
-                    // cout << "(" << mRowStart << "," << mColStart << ") k=" << kernelSize << " 1s=" << allOnes << " count=" << count << "\n";
+        for (int mRow = 0; mRow < matrixRows; mRow++) {
+            for (int mCol = 0; mCol < matrixCols; mCol++) {
+                if (matrix[mRow][mCol] == 1) {
+                    dp[mRow + 1][mCol + 1] = min({dp[mRow][mCol + 1], dp[mRow + 1][mCol], dp[mRow][mCol]}) + 1;
+                    count += dp[mRow + 1][mCol + 1];
                 }
             }
         }
+
         return count;
     }
 };

@@ -1,144 +1,101 @@
+#include <cassert>
+#include <chrono>
 #include <iostream>
+#include <set>
 #include <vector>
 
 using namespace std;
 
 class Solution {
+    int maxWithDuplicates = -1;
+    int maxWithoutDuplicates = -1;
+
   public:
     int maxScore(vector<vector<int>> &grid) {
         for (vector<int> &row : grid) {
             std::sort(row.rbegin(), row.rend());
         }
 
+        const size_t rows = grid.size();
+        const size_t cols = grid[0].size();
         vector<size_t> indices(grid.size(), 0);
-        return getMax(grid, indices, grid[0].size());
-
-        int sum = 0;
-        for (int i = 0; i < grid.size(); i++) {
-            sum += grid[i][indices[i]];
-        }
-
-        return sum;
-    }
-
-    int getMax(const vector<vector<int>> &grid, const vector<size_t> &indices, const size_t rowSize, int callCount = 0) {
-        cout << "indices\n";
-        print(indices);
-        if (callCount > 2)
-            return 0;
-        vector<vector<size_t>> duplicateIndexes = getDuplicates(grid, indices);
-        cout << "duplicatesIndexes\n";
-        print(duplicateIndexes);
-        if (duplicateIndexes.size() == 0) {
-            int sum = 0;
-            for (int i = 0; i < grid.size(); i++) {
-                sum += grid[i][indices[i]];
+        vector<size_t> selectedColumns(rows, 0);
+        bool limitReached = false;
+        while (!limitReached) {
+            // cout << "selectedColumns :";
+            // print(selectedColumns);
+            auto [sum, hasDuplicates] = getSum(grid, selectedColumns);
+            if (hasDuplicates) {
+                maxWithDuplicates = max(maxWithDuplicates, sum);
+                // cout << "maxWithDups " << maxWithDuplicates << endl;
+            } else {
+                maxWithoutDuplicates = max(maxWithoutDuplicates, sum);
+                // cout << "maxWithoutDups " << maxWithoutDuplicates << endl;
             }
-            return sum;
-        }
-        /*for(auto dups : duplicateIndexes) {
-            for(auto i : dups) {
-                std::cout << i << " ";
-            }
-            std::cout << "\n  ";
-        }*/
-        vector<size_t> indicesToNotIncrement(duplicateIndexes.size(), 0);
-        int maxValue = 0;
-        bool stop = false;
-        int loopCount = 0;
-        while (!stop && loopCount < 10) {
-            /*for(int i = 0; i < indices.size(); i++) {
-                if(indices[i] == rowSize - 1) {
-                    return maxValue; // No more offset possible
-                }
-                currentOffset[i]++;
-            }*/
 
-            vector<size_t> newIndices = indices; // Clone
-            for (int i = 0; i < indicesToNotIncrement.size(); i++) {
-                // newIndices[duplicateIndexes[i][indicesToNotIncrement[i]]]++;
-                for (int j = 0; j < duplicateIndexes[i].size(); j++) {
-                    if (j == indicesToNotIncrement[i]) {
-                        continue;
-                    }
-                    newIndices[duplicateIndexes[i][j]]++;
-                    if (newIndices[duplicateIndexes[i][j]] == rowSize) {
-                        cout << "max indice";
-                        return maxValue; // No more offset possible
-                    }
-                }
-            }
-            cout << "newIndices\n";
-            print(newIndices);
-            maxValue = max(maxValue, getMax(grid, newIndices, rowSize, callCount + 1));
-
-            for (int i = 0; i < indicesToNotIncrement.size(); i++)
-                 {
-                    if (indicesToNotIncrement[i] == duplicateIndexes[i].size() - 1) {
-                        stop = true;
-                    }
-                }
-
-            for (int i = 0; i < indicesToNotIncrement.size(); i++) {
-                if (indicesToNotIncrement[i] != duplicateIndexes[i].size()) {
-                    indicesToNotIncrement[i]++;
-                    cout << "idx++ " << i << " " << indicesToNotIncrement[i] << "\n";
+            // for (int i = 0; i < rows; i++) {
+            //     auto it = duplicateIndices.begin();
+            //     std::advance(it, i);
+            //     if (indicesToNotIncrement[i] == it->second.size() - 1) {
+            //         stop = true;
+            //     }
+            // }
+            for (int i = 0; i < rows; i++) {
+                if (selectedColumns[i] != cols - 1) {
+                    selectedColumns[i]++;
                     break;
+                } else if (i == rows - 1) {
+                    limitReached = true;
                 }
-                indicesToNotIncrement[i] = 0;
-                cout << "idx=0 " << i << "\n";
+                selectedColumns[i] = 0;
             }
-            loopCount++;
         }
-        return maxValue;
+
+        if (maxWithoutDuplicates == -1) {
+            return maxWithDuplicates;
+        }
+        return maxWithoutDuplicates;
     }
 
-    vector<vector<size_t>> getDuplicates(const vector<vector<int>> &grid, const vector<size_t> &indices) {
-        // cout << grid.size();
-        // cout << indices.size();
-        vector<int> column(grid.size());
+    pair<int, bool> getSum(const vector<vector<int>> &grid, const vector<size_t> &selectedColumns) {
+        int sum = 0;
+        bool hasDuplicates = false;
+        set<int> usedValues;
         for (int i = 0; i < grid.size(); i++) {
-            column[i] = grid[i][indices[i]];
-        }
-
-        vector<vector<size_t>> duplicates;
-        for (int i = 0; i < column.size(); i++) {
-            vector<size_t> duplicateIndices;
-            duplicateIndices.push_back(i);
-            for (int j = i + 1; j < column.size(); j++) {
-                if (column[j] == column[i]) {
-                    duplicateIndices.push_back(j);
-                }
+            if (usedValues.count(grid[i][selectedColumns[i]]) == 0) {
+                usedValues.insert(grid[i][selectedColumns[i]]);
+            } else {
+                hasDuplicates = true;
+                continue;
             }
-
-            if (duplicateIndices.size() > 1) {
-                duplicates.emplace_back(duplicateIndices);
-            }
+            sum += grid[i][selectedColumns[i]];
         }
-
-        return duplicates;
+        return {sum, hasDuplicates};
     }
 
-    void print(vector<vector<int>> &grid) {
-        for (vector<int> &row : grid) {
-            for (int &col : row) {
+    void print(const vector<vector<int>> &grid) {
+        for (const vector<int> &row : grid) {
+            for (const int &col : row) {
                 std::cout << col << " ";
             }
             std::cout << "\n";
         }
     }
 
-    void print(vector<vector<size_t>> &grid) {
-        for (vector<size_t> &row : grid) {
-            for (size_t &col : row) {
-                std::cout << col << " ";
+    void print(const unordered_map<int, vector<size_t>> &grid) {
+        for (const pair<const int, vector<size_t>> &row : grid) {
+            for (const size_t &col : row.second) {
+                std::cout << row.first << "|" << col << " ";
             }
             std::cout << "\n";
         }
     }
 
     void print(const vector<size_t> &indices) {
+        // cout << "aaaa" << endl;
+        // cout << "indices size " << indices.size() << endl;
         for (size_t i : indices) {
+            // cout << "b" << endl;
             cout << i << " ";
         }
         cout << "\n";
@@ -146,14 +103,19 @@ class Solution {
 };
 
 int main() {
-    vector<vector<int>> grid{{3, 3, 1}, {3, 3, 2}, {3, 3, 3}};
+    // vector<vector<int>> grid{{3, 3, 1}, {3, 3, 2}, {3, 3, 3}};
+    // vector<vector<int>> grid{{5}, {7}, {19}, {5}};
+    // vector<vector<int>> grid{{1, 2, 3}, {4, 3, 2}, {1, 1, 1}};
+    // vector<vector<int>> grid{{13, 14, 14}, {14, 18, 18}, {20, 14, 20}, {20, 4, 14}};
+    vector<vector<int>> grid{{25, 56, 56, 56, 78}, {60, 58, 56, 56, 91}, {56, 60, 46, 15, 41}, {46, 60, 77, 20, 31}, {76, 46, 24, 78, 23}, {58, 92, 17, 60, 46}, {15, 60, 20, 25, 56}, {25, 78, 15, 90, 25}, {90, 15, 25, 10, 33}};
 
     auto start = chrono::system_clock::now();
 
     Solution solution;
-    solution.maxScore(grid);
+    int max = solution.maxScore(grid);
 
     auto end = chrono::system_clock::now();
     auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << elapsed.count() << '\n';
+    cout << "max=" << max << "\n";
+    cout << "elapsed = " << elapsed.count() << "ms\n";
 }

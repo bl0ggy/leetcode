@@ -38,6 +38,9 @@ add_executable(1277
 add_executable(2458
     2458/2458.cpp
 )
+add_executable(2501
+    2501/2501.cpp
+)
 add_executable(3276
     3276/3276.cpp
 )

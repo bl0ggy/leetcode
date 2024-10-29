@@ -29,18 +29,15 @@ endif()
 
 include_directories(AFTER .)
 
-add_executable(1223
-    1223/1223.cpp
+set(tests
+    1223
+    1277
+    2458
+    2501
+    3276
 )
-add_executable(1277
-    1277/1277.cpp
-)
-add_executable(2458
-    2458/2458.cpp
-)
-add_executable(2501
-    2501/2501.cpp
-)
-add_executable(3276
-    3276/3276.cpp
-)
+foreach(x IN LISTS tests)
+    add_executable(${x}
+        src/${x}.cpp
+    )
+endforeach()

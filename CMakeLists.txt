@@ -39,6 +39,7 @@ set(tests
     3264
     3266
     3276
+    3330
 )
 foreach(x IN LISTS tests)
     add_executable(${x}

@@ -37,6 +37,7 @@ set(tests
     2501
     2684
     3264
+    3266
     3276
 )
 foreach(x IN LISTS tests)

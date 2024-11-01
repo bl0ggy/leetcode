@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.30...3.30.1)
 cmake_policy(VERSION 3.30...3.30.1)
 
+# EDIT: Not required anymore, but need some ENV configuration
+# See https://github.com/bl0ggy/dotfiles/blob/3e94728a6ccbf033d4f7b6baa1c68c4fac5cf6db/zsh/.zshrc#L38-L56
+# -----
 # Very tricky one, MacOS has /usr/opt/clang++ which is made by Apple, named "AppleClang"
 # This MacOS version is not compatible with the clangd provided by Mason's clangd LSP
 # So we must change the compiler path to a most recent one

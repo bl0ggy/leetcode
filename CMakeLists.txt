@@ -34,6 +34,7 @@ include_directories(AFTER .)
 
 set(tests
     89
+    796
     1223
     1277
     1560

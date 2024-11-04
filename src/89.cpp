@@ -1,10 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
@@ -25,74 +19,29 @@ class Solution {
 
         return answer;
     }
-
-    // Best solution, very smart
-    // vector<int> grayCode(int n) {
-    //     vector<int> res;
-    //     for (int i = 0; i < (1 << n); i++) {
-    //         res.push_back(i ^ (i >> 1));
-    //         cout << bitset<16>(res.back()) << endl;
-    //     }
-    //     return res;
-    // }
 };
-
-struct TestCase {
-    int n;
-    vector<int> expectedOutput;
-    vector<int> returnedOutput;
-};
-
-void print(vector<int> vec) {
-    cout << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        cout << *it;
-        if (it + 1 != vec.end()) {
-            cout << ", ";
-        }
-    }
-    cout << "}";
-}
-
-void printFlatten(TestCase test) {
-    cout << "Input: " << test.n;
-    cout << "\nOutput: ";
-    print(test.expectedOutput);
-    cout << "\n";
-}
 
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput = "n";
+    const string nameOutput = "gray code";
+    vector<TestCase<int, vector<int>>> testCases{
         {
-            .n = 1,
-            .expectedOutput = {0, 1},
+            {nameInput, 1},
+            {nameOutput, {0, 1}},
         },
         {
-            .n = 2,
-            .expectedOutput = {0, 1, 3, 2},
+            {nameInput, 2},
+            {nameOutput, {0, 1, 3, 2}},
         },
         {
-            .n = 3,
-            .expectedOutput = {0, 1, 3, 2},
+            {nameInput, 3},
+            {nameOutput, {0, 1, 3, 2, 6, 7, 5, 4}},
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printFlatten(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<int, vector<int>> testCase) {
         Solution solution;
-        test.returnedOutput = solution.grayCode(test.n);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned ";
-            print(test.returnedOutput);
-            cout << "\n";
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.grayCode(testCase.input);
+    });
 }

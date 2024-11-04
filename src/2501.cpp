@@ -1,10 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
@@ -40,19 +34,26 @@ class Solution {
 };
 
 int main() {
-    // vector<int> input{{4, 3, 6, 16, 8, 2}};
-    vector<int> input{3, 9, 81, 6561};
-    // vector<int> input{2};
-    int expectedCount = 15;
+    const string nameInput = "value";
+    const string nameOutput = "longest square streak";
+    vector<TestCase<vector<int>, int>> testCases{
+        {
+            {nameInput, {2}},
+            {nameOutput, -1},
+        },
+        {
+            {nameInput, {3, 9, 81, 6561}},
+            {nameOutput, 4},
+        },
+        {
+            {nameInput, {4, 3, 6, 16, 8, 2}},
+            {nameOutput, 3},
+        },
+    };
 
-    auto start = chrono::system_clock::now();
-
-    Solution solution;
-    int count = solution.longestSquareStreak(input);
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "elapsed = " << elapsed.count() << "ms\n";
-    cout << "count=" << count << "\n";
-    assert(count == expectedCount);
+    Main main;
+    return main.runTests(testCases, [](TestCase<vector<int>, int> testCase) {
+        Solution solution;
+        return solution.longestSquareStreak(testCase.input);
+    });
 }

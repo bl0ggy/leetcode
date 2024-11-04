@@ -1,10 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
     long long mod = 1e9 + 7;
@@ -60,71 +54,35 @@ class Solution {
     }
 };
 
-struct TestCase {
-    vector<int> input;
-    int k;
-    int multiplier;
-    vector<int> expectedOutput;
-    vector<int> returnedOutput;
-};
-
-void print(vector<int> vec) {
-    cout << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        cout << *it;
-        if (it + 1 != vec.end()) {
-            cout << ", ";
-        }
-    }
-    cout << "}";
-}
-
-void printFlatten(TestCase test) {
-    cout << "Input: ";
-    print(test.input);
-    cout << "}\nOutput: ";
-    print(test.expectedOutput);
-    cout << "\n";
-}
-
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput1 = "nums";
+    const string nameInput2 = "k";
+    const string nameInput3 = "multiplier";
+    const string nameOutput = "final state";
+    vector<TestCase<vector<int>, int, int, vector<int>>> testCases{
         {
-            .input = {161209470},
-            .k = 56851412,
-            .multiplier = 39846,
-            .expectedOutput = {198168519},
+            {nameInput1, {161209470}},
+            {nameInput2, 56851412},
+            {nameInput3, 39846},
+            {nameOutput, {198168519}},
         },
         {
-            .input = {2, 1, 3, 5, 6},
-            .k = 5,
-            .multiplier = 2,
-            .expectedOutput = {8, 4, 6, 5, 6},
+            {nameInput1, {2, 1, 3, 5, 6}},
+            {nameInput2, 5},
+            {nameInput3, 2},
+            {nameOutput, {8, 4, 6, 5, 6}},
         },
         {
-            .input = {100000, 2000},
-            .k = 2,
-            .multiplier = 1000000,
-            .expectedOutput = {999999307, 999999993},
+            {nameInput1, {100000, 2000}},
+            {nameInput2, 2},
+            {nameInput3, 1000000},
+            {nameOutput, {999999307, 999999993}},
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printFlatten(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<vector<int>, int, int, vector<int>> testCase) {
         Solution solution;
-        test.returnedOutput = solution.getFinalState(test.input, test.k, test.multiplier);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned ";
-            print(test.returnedOutput);
-            cout << "\n";
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.getFinalState(testCase.input1, testCase.input2, testCase.input3);
+    });
 }

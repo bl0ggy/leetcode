@@ -1,9 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
@@ -27,17 +22,18 @@ class Solution {
 };
 
 int main() {
-    vector<vector<int>> input{{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}};
-    int expectedCount = 15;
+    const string nameInput = "matrix";
+    const string nameOutput = "squares";
+    vector<TestCase<vector<vector<int>>, int>> testCases{
+        {
+            {nameInput, {{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}}},
+            {nameOutput, 15},
+        },
+    };
 
-    auto start = chrono::system_clock::now();
-
-    Solution solution;
-    int count = solution.countSquares(input);
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "elapsed = " << elapsed.count() << "ms\n";
-    cout << "count=" << count << "\n";
-    assert(count == expectedCount);
+    Main main;
+    return main.runTests(testCases, [](TestCase<vector<vector<int>>, int> testCase) {
+        Solution solution;
+        return solution.countSquares(testCase.input);
+    });
 }

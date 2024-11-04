@@ -1,10 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
@@ -47,93 +41,59 @@ class Solution {
 
         return minRemovals;
     }
-
-    void print(vector<int> vec) {
-        for (int val : vec) {
-            cout << val << " ";
-        }
-        cout << "\n";
-    }
 };
-
-struct TestCase {
-    vector<int> input;
-    int expectedOutput;
-    int returnedOutput;
-};
-
-void printFlatten(TestCase test) {
-    cout << "Input: {";
-    for (auto i = test.input.begin(); i != test.input.end(); i++) {
-        cout << *i;
-        if (i + 1 != test.input.end()) {
-            cout << ", ";
-        }
-    }
-    cout << "}\nOutput: " << test.expectedOutput << "\n";
-}
 
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput = "word";
+    const string nameOutput = "minimum mountain removals";
+    vector<TestCase<vector<int>, int>> testCases{
         {
-            .input = {1, 3, 1},
-            .expectedOutput = 0,
+            {nameInput, {1, 3, 1}},
+            {nameOutput, 0},
         },
         {
-            .input = {2, 1, 1, 5, 6, 2, 3, 1}, // length: 8
-            .expectedOutput = 3,
+            {nameInput, {2, 1, 1, 5, 6, 2, 3, 1}}, // length: 8
+            {nameOutput, 3},
         },
         {
             // Randoms drops
-            .input = {1, 2, 3, 1, 4, 5, 1, 6, 1, 4, 1}, // length: 11
-            .expectedOutput = 3,
+            {nameInput, {1, 2, 3, 1, 4, 5, 1, 6, 1, 4, 1}}, // length: 11
+            {nameOutput, 3},
         },
         {
             // Succinct drops
-            .input = {1, 2, 3, 1, 1, 1, 1, 4, 5, 6, 4, 1}, // length = 12
-            .expectedOutput = 4,
+            {nameInput, {1, 2, 3, 1, 1, 1, 1, 4, 5, 6, 4, 1}}, // length = 12
+            {nameOutput, 4},
         },
         {
             // Repeating sequences
-            .input = {1, 2, 3, 1, 2, 3, 1, 2, 3, 5, 6, 4, 1}, // length = 13
-            .expectedOutput = 6,
+            {nameInput, {1, 2, 3, 1, 2, 3, 1, 2, 3, 5, 6, 4, 1}}, // length = 13
+            {nameOutput, 6},
         },
         {
             // Starting from the maximum is incorrect
-            .input = {1, 2, 3, 4, 5, 4, 3, 2, 6, 1}, // length = 10
-            .expectedOutput = 1,
+            {nameInput, {1, 2, 3, 4, 5, 4, 3, 2, 6, 1}}, // length = 10
+            {nameOutput, 1},
         },
         {
             // Starting from the minimum is incorrect
-            .input = {4, 5, 6, 1, 5, 4, 3}, // length = 7
-            .expectedOutput = 1,
+            {nameInput, {4, 5, 6, 1, 5, 4, 3}}, // length = 7
+            {nameOutput, 1},
         },
         {
             // Start with highest number
-            .input = {9, 8, 1, 7, 6, 5, 4, 3, 2, 1}, // length = 10
-            .expectedOutput = 2,
+            {nameInput, {9, 8, 1, 7, 6, 5, 4, 3, 2, 1}}, // length = 10
+            {nameOutput, 2},
         },
         {
-            .input = {4, 5, 13, 17, 1, 7, 6, 11, 2, 8, 10, 15, 3, 9, 12, 14, 16}, // length = 17
-            .expectedOutput = 10,
+            {nameInput, {4, 5, 13, 17, 1, 7, 6, 11, 2, 8, 10, 15, 3, 9, 12, 14, 16}}, // length = 17
+            {nameOutput, 10},
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printFlatten(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<vector<int>, int> testCase) {
         Solution solution;
-        test.returnedOutput = solution.minimumMountainRemovals(test.input);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned " << test.returnedOutput << "\n";
-            break;
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.minimumMountainRemovals(testCase.input);
+    });
 }

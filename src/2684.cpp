@@ -1,14 +1,8 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
-    int longestSquareStreak(vector<vector<int>> &grid) {
+    int maxMoves(vector<vector<int>> &grid) {
         size_t rows = grid.size();
         size_t cols = grid[0].size();
         vector<bool> dpRow(rows, 1);
@@ -37,65 +31,25 @@ class Solution {
 
         return c - 1;
     }
-
-    void print(vector<bool> vec) {
-        for (bool val : vec) {
-            cout << val << " ";
-        }
-        cout << "\n";
-    }
 };
-
-struct TestCase {
-    vector<vector<int>> input;
-    int expectedOutput;
-    int returnedOutput;
-};
-
-void printFlatten(TestCase test) {
-    cout << "Input: {";
-    for (auto row = test.input.begin(); row != test.input.end(); row++) {
-        cout << "{";
-        for (auto col = row->begin(); col < row->end(); col++) {
-            cout << *col;
-            if (col + 1 != row->end()) {
-                cout << ", ";
-            }
-        }
-        cout << "}";
-        if (row + 1 != test.input.end()) {
-            cout << ",\n";
-        }
-    }
-    cout << "}\nOutput: " << test.expectedOutput << "\n";
-}
 
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput = "word";
+    const string nameOutput = "number of moves";
+    vector<TestCase<vector<vector<int>>, int>> testCases{
         {
-            .input = {{2, 4, 3, 5}, {5, 4, 9, 3}, {3, 4, 2, 11}, {10, 9, 13, 15}},
-            .expectedOutput = 3,
+            {nameInput, {{2, 4, 3, 5}, {5, 4, 9, 3}, {3, 4, 2, 11}, {10, 9, 13, 15}}},
+            {nameOutput, 3},
         },
         {
-            .input = {{3, 2, 4}, {2, 1, 9}, {1, 1, 7}},
-            .expectedOutput = 0,
+            {nameInput, {{3, 2, 4}, {2, 1, 9}, {1, 1, 7}}},
+            {nameOutput, 0},
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printFlatten(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<vector<vector<int>>, int> testCase) {
         Solution solution;
-        test.returnedOutput = solution.longestSquareStreak(test.input);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned " << test.returnedOutput << "\n";
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.maxMoves(testCase.input);
+    });
 }

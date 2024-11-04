@@ -1,21 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
-
-void print(vector<int> vec) {
-    cout << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        cout << *it;
-        if (it + 1 != vec.end()) {
-            cout << ", ";
-        }
-    }
-    cout << "}";
-}
+#include "common.h"
 
 class Solution {
   public:
@@ -55,57 +38,31 @@ class Solution {
     }
 };
 
-struct TestCase {
-    int n;
-    vector<int> rounds;
-    vector<int> expectedOutput;
-    vector<int> returnedOutput;
-};
-
-void printFlatten(TestCase test) {
-    cout << "n: " << test.n << "\n";
-    cout << "rounds: ";
-    print(test.rounds);
-    cout << "\nOutput: ";
-    print(test.expectedOutput);
-    cout << "\n";
-}
-
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput1 = "n";
+    const string nameInput2 = "rounds";
+    const string nameOutput = "Most visited sections";
+    vector<TestCase<int, vector<int>, vector<int>>> testCases{
         {
-            .n = 4,
-            .rounds = {1, 3, 1, 2},
-            .expectedOutput = {1, 2},
+            {nameInput1, 4},            //
+            {nameInput2, {1, 3, 1, 2}}, //
+            {nameOutput, {1, 2}},       //
         },
         {
-            .n = 2,
-            .rounds = {2, 1, 2, 1, 2, 1, 2, 1, 2},
-            .expectedOutput = {2},
+            {nameInput1, 2},                           //
+            {nameInput2, {2, 1, 2, 1, 2, 1, 2, 1, 2}}, //
+            {nameOutput, {2}},                         //
         },
         {
-            .n = 7,
-            .rounds = {1, 3, 5, 7},
-            .expectedOutput = {1, 2, 3, 4, 5, 6, 7},
+            {nameInput1, 7},                     //
+            {nameInput2, {1, 3, 5, 7}},          //
+            {nameOutput, {1, 2, 3, 4, 5, 6, 7}}, //
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printFlatten(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<int, vector<int>, vector<int>> test) {
         Solution solution;
-        test.returnedOutput = solution.mostVisited(test.n, test.rounds);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned ";
-            print(test.returnedOutput);
-            cout << "\n";
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.mostVisited(test.input1, test.input2);
+    });
 }

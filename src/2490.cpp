@@ -1,10 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
@@ -26,73 +20,33 @@ class Solution {
         }
         return sentence.front() == sentence.back();
     }
-
-    void print(vector<int> vec) {
-        cout << "{";
-        for (auto it = vec.begin(); it != vec.end(); it++) {
-            cout << *it;
-            if (it + 1 != vec.end()) {
-                cout << ", ";
-            }
-        }
-        cout << "}";
-    }
-
-    void print(vector<pair<int, int>> v) {
-        cout << "{";
-        for (auto p = v.begin(); p != v.end(); p++) {
-            cout << "{" << p->first << "," << p->second << "}";
-            if (p + 1 != v.end()) {
-                cout << ",";
-            }
-        }
-    }
 };
-
-struct TestCase {
-    string sentence;
-    bool expectedOutput;
-    bool returnedOutput;
-};
-
-void printTest(TestCase test) {
-    cout << "word: " << test.sentence << "\nOutput: " << test.expectedOutput << endl;
-}
 
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput = "sentence";
+    const string nameOutput = "is circular";
+    vector<TestCase<string, bool>> testCases{
         {
-            .sentence = "leetcode exercises sound delightful",
-            .expectedOutput = true,
+            {nameInput, "leetcode exercises sound delightful"},
+            {nameOutput, true},
         },
         {
-            .sentence = "eetcode",
-            .expectedOutput = true,
+            {nameInput, "eetcode"},
+            {nameOutput, true},
         },
         {
-            .sentence = "Leetcode is cool",
-            .expectedOutput = false,
+            {nameInput, "Leetcode is cool"},
+            {nameOutput, false},
         },
         {
-            .sentence = "MuFoevIXCZzrpXeRmTssj lYSW U jM",
-            .expectedOutput = false,
+            {nameInput, "MuFoevIXCZzrpXeRmTssj lYSW U jM"},
+            {nameOutput, false},
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printTest(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<string, bool> testCase) {
         Solution solution;
-        test.returnedOutput = solution.isCircularSentence(test.sentence);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned " << test.returnedOutput << "\n";
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.isCircularSentence(testCase.input);
+    });
 }

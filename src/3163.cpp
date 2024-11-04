@@ -3,25 +3,30 @@
 class Solution {
   public:
     string compressedString(string word) {
-        stringstream answer;
+        string answer(word.length() * 2, 0);
         size_t wordLength = word.length();
         int count = 1;
-        size_t i;
-        for (i = 1; i < wordLength; i++) {
+        size_t i, j;
+        for (i = 1, j = 0; i < wordLength; i++) {
             if (word[i] != word[i - 1]) {
-                answer << count << word[i - 1];
+                answer[j++] = (char)(48 + count);
+                answer[j++] = word[i - 1];
                 count = 1;
             } else {
                 if (count == 9) {
-                    answer << count << word[i - 1];
+                    answer[j++] = (char)(48 + count);
+                    answer[j++] = word[i - 1];
                     count = 1;
                 } else {
                     count++;
                 }
             }
         }
-        answer << count << word[i - 1];
-        return answer.str();
+        answer[j++] = (char)(48 + count);
+        answer[j++] = word[i - 1];
+        answer.resize(j);
+
+        return answer;
     }
 };
 

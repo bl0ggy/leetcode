@@ -2,31 +2,35 @@
 
 class Solution {
   public:
-    string compressedString(string word) {
-        string answer(word.length() * 2, 0);
+    string compressedString(string &word) {
         size_t wordLength = word.length();
-        int count = 1;
+        size_t twoWordLength = wordLength * 2;
+        // Max output size is twice the word: "abcde" -> "1a1b1c1d1e"
+        // Will edit `word` directly, so we copy it to itself to make it twice as long
+        word += word;
+        char count = '1';
         size_t i, j;
-        for (i = 1, j = 0; i < wordLength; i++) {
-            if (word[i] != word[i - 1]) {
-                answer[j++] = (char)(48 + count);
-                answer[j++] = word[i - 1];
-                count = 1;
+        for (i = wordLength + 1, j = 0; i < twoWordLength; i++) {
+            char c = word[i - 1];
+            if (word[i] != c) {
+                word[j++] = count;
+                word[j++] = c;
+                count = '1';
             } else {
-                if (count == 9) {
-                    answer[j++] = (char)(48 + count);
-                    answer[j++] = word[i - 1];
-                    count = 1;
+                if (count == '9') {
+                    word[j++] = count;
+                    word[j++] = c;
+                    count = '1';
                 } else {
                     count++;
                 }
             }
         }
-        answer[j++] = (char)(48 + count);
-        answer[j++] = word[i - 1];
-        answer.resize(j);
+        word[j++] = count;
+        word[j++] = word[i - 1];
+        word.resize(j);
 
-        return answer;
+        return word;
     }
 };
 

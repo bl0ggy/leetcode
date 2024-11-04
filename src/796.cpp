@@ -1,10 +1,4 @@
-#include <cassert>
-#include <chrono>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
-
-using namespace std;
+#include "common.h"
 
 class Solution {
   public:
@@ -31,45 +25,26 @@ class Solution {
     }
 };
 
-struct TestCase {
-    string s;
-    string goal;
-    bool expectedOutput;
-    bool returnedOutput;
-};
-
-void printTest(TestCase test) {
-    cout << "s: " << test.s << "\ngoal=" << test.goal << "\nOutput: " << test.expectedOutput << endl;
-}
-
 int main() {
-    vector<TestCase> testCases{
+    const string nameInput1 = "s";
+    const string nameInput2 = "goal";
+    const string nameOutput = "";
+    vector<TestCase<string, string, bool>> testCases{
         {
-            .s = "abcde",
-            .goal = "cdeab",
-            .expectedOutput = true,
+            {nameInput1, "abcde"},
+            {nameInput2, "cdeab"},
+            {nameOutput, true},
         },
         {
-            .s = "abcde",
-            .goal = "abced",
-            .expectedOutput = false,
+            {nameInput1, "abcde"},
+            {nameInput2, "abced"},
+            {nameOutput, false},
         },
     };
 
-    auto start = chrono::system_clock::now();
-    for (auto test : testCases) {
-        printTest(test);
+    Main main;
+    return main.runTests(testCases, [](TestCase<string, string, bool> testCase) {
         Solution solution;
-        test.returnedOutput = solution.rotateString(test.s, test.goal);
-        if (test.returnedOutput == test.expectedOutput) {
-            cout << "\e[32;m  => Pass\n";
-        } else {
-            cout << "\e[31;m  => Failed : returned " << test.returnedOutput << "\n";
-        }
-        cout << "\e[0;m\n";
-    }
-
-    auto end = chrono::system_clock::now();
-    auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "\nElapsed = " << elapsed.count() << "ms\n";
+        return solution.rotateString(testCase.input1, testCase.input2);
+    });
 }

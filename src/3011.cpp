@@ -1,5 +1,4 @@
 #include "common.h"
-#include <bit>
 
 class Solution {
   public:

@@ -13,11 +13,12 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "word";
+    const string nameInput1 = "values";
     const string nameInput2 = "k";
     const string nameInput3 = "multiplier";
     const string nameOutput = "final state";
     vector<TestCase<vector<int>, int, int, vector<int>>> testCases{
+        // Original test cases
         {
             {nameInput1, {2, 1, 3, 5, 6}},
             {nameInput2, 5},

@@ -25,9 +25,14 @@ int main() {
     const string nameInput = "matrix";
     const string nameOutput = "squares";
     vector<TestCase<vector<vector<int>>, int>> testCases{
+        // Original test cases
         {
             {nameInput, {{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}}},
             {nameOutput, 15},
+        },
+        {
+            {nameInput, {{1, 0, 1}, {1, 1, 0}, {1, 1, 0}}},
+            {nameOutput, 7},
         },
     };
 

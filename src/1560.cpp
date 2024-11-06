@@ -43,15 +43,16 @@ int main() {
     const string nameInput2 = "rounds";
     const string nameOutput = "Most visited sections";
     vector<TestCase<int, vector<int>, vector<int>>> testCases{
-        {
-            {nameInput1, 4},            //
-            {nameInput2, {1, 3, 1, 2}}, //
-            {nameOutput, {1, 2}},       //
-        },
+        // Original test cases
         {
             {nameInput1, 2},                           //
             {nameInput2, {2, 1, 2, 1, 2, 1, 2, 1, 2}}, //
             {nameOutput, {2}},                         //
+        },
+        {
+            {nameInput1, 4},            //
+            {nameInput2, {1, 3, 1, 2}}, //
+            {nameOutput, {1, 2}},       //
         },
         {
             {nameInput1, 7},                     //

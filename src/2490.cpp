@@ -26,6 +26,7 @@ int main() {
     const string nameInput = "sentence";
     const string nameOutput = "is circular";
     vector<TestCase<string, bool>> testCases{
+        // Original test cases
         {
             {nameInput, "leetcode exercises sound delightful"},
             {nameOutput, true},
@@ -38,6 +39,7 @@ int main() {
             {nameInput, "Leetcode is cool"},
             {nameOutput, false},
         },
+        // Submit test cases
         {
             {nameInput, "MuFoevIXCZzrpXeRmTssj lYSW U jM"},
             {nameOutput, false},

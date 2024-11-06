@@ -25,6 +25,20 @@ int main() {
     const string nameInput = "folders";
     const string nameOutput = "parent folders";
     vector<TestCase<vector<string>, vector<string>>> testCases {
+        // Original test cases
+        {
+            {nameInput, {"/a","/a/b","/c/d","/c/d/e","/c/f"}},
+                {nameOutput, {"/a","/c/d","/c/f"}},
+        },
+        {
+            {nameInput, {"/a","/a/b/c","/a/b/d"}},
+                {nameOutput, {"/a"}},
+        },
+        {
+            {nameInput, {"/a/b/c","/a/b/ca","/a/b/d"}},
+                {nameOutput, {"/a/b/c","/a/b/ca","/a/b/d"}},
+        },
+        // Submit test cases
         {
             {
                 nameInput,

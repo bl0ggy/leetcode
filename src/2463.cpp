@@ -35,6 +35,7 @@ int main() {
     const string nameInput2 = "factories";
     const string nameOutput = "minimum total distance";
     vector<TestCase<vector<int>, vector<vector<int>>, int>> testCases{
+        // Original test cases
         {
             {nameInput1, {0, 4, 6}},
             {nameInput2, {{2, 2}, {6, 2}}},
@@ -45,6 +46,13 @@ int main() {
             {nameInput2, {{-2, 2}, {2, 1}}},
             {nameOutput, 2},
         },
+        // Submit test cases
+        {
+            {nameInput1, {789300819, -600989788, 529140594, -592135328, -840831288, 209726656, -671200998}},
+            {nameInput2, {{-865262624, 6}, {-717666169, 0}, {725929046, 2}, {449443632, 3}, {-912630111, 0}, {270903707, 3}, {-769206598, 2}, {-299780916, 4}, {-159433745, 5}, {-467185764, 3}, {849991650, 7}, {-292158515, 6}, {940410553, 6}, {258278787, 0}, {83034539, 2}, {54441577, 3}, {-235385712, 2}, {75791769, 3}}},
+            {nameOutput, 582755368},
+        },
+        // My test cases
         {
             // r--r------ //
             // -------f-f //

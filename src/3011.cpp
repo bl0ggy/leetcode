@@ -32,7 +32,7 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "nums";
+    const string nameInput = "values";
     const string nameOutput = "can sort array";
     vector<TestCase<vector<int>, bool>> testCases{
         // Original test cases

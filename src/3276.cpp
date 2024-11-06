@@ -45,6 +45,7 @@ int main() {
     const string nameInput = "grid";
     const string nameOutput = "max score";
     vector<TestCase<vector<vector<int>>, int>> testCases{
+        // Original test cases
         {
             {nameInput, {{1, 2, 3}, {4, 3, 2}, {1, 1, 1}}},
             {nameOutput, 8},
@@ -53,6 +54,12 @@ int main() {
             {nameInput, {{8, 7, 6}, {8, 3, 2}}},
             {nameOutput, 15},
         },
+        // Submit test cases
+        {
+            {nameInput, {{25, 56, 56, 56, 78}, {60, 58, 56, 56, 91}, {56, 60, 46, 15, 41}, {46, 60, 77, 20, 31}, {76, 46, 24, 78, 23}, {58, 92, 17, 60, 46}, {15, 60, 20, 25, 56}, {25, 78, 15, 90, 25}, {90, 15, 25, 10, 33}}},
+            {nameOutput, 666},
+        },
+        // My test cases
         {
             {nameInput, {{3, 3, 1}, {3, 3, 2}, {3, 3, 3}}},
             {nameOutput, 6},
@@ -60,10 +67,6 @@ int main() {
         {
             {nameInput, {{9, 9}, {9, 9}, {9, 9}}},
             {nameOutput, 9},
-        },
-        {
-            {nameInput, {{25, 56, 56, 56, 78}, {60, 58, 56, 56, 91}, {56, 60, 46, 15, 41}, {46, 60, 77, 20, 31}, {76, 46, 24, 78, 23}, {58, 92, 17, 60, 46}, {15, 60, 20, 25, 56}, {25, 78, 15, 90, 25}, {90, 15, 25, 10, 33}}},
-            {nameOutput, 666},
         },
         {
             {nameInput, {{1, 2}, {1, 3}}},

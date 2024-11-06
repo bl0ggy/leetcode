@@ -34,9 +34,27 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "value";
+    const string nameInput = "values";
     const string nameOutput = "longest square streak";
     vector<TestCase<vector<int>, int>> testCases{
+        // Original test cases
+        {
+            {nameInput, {4, 3, 6, 16, 8, 2}},
+            {nameOutput, 3},
+        },
+        {
+            {nameInput, {2, 3, 5, 6, 7}},
+            {nameOutput, -1},
+        },
+        // My test cases
+        {
+            {nameInput, {2, 3}},
+            {nameOutput, -1},
+        },
+        {
+            {nameInput, {4, 5}},
+            {nameOutput, -1},
+        },
         {
             {nameInput, {2}},
             {nameOutput, -1},
@@ -44,10 +62,6 @@ int main() {
         {
             {nameInput, {3, 9, 81, 6561}},
             {nameOutput, 4},
-        },
-        {
-            {nameInput, {4, 3, 6, 16, 8, 2}},
-            {nameOutput, 3},
         },
     };
 

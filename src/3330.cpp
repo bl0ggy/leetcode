@@ -18,6 +18,7 @@ int main() {
     const string nameInput = "word";
     const string nameOutput = "possible string count";
     vector<TestCase<string, int>> testCases{
+        // Original test cases
         {
             {nameInput, "abbcccc"},
             {nameOutput, 5},
@@ -30,6 +31,7 @@ int main() {
             {nameInput, "aaaa"},
             {nameOutput, 4},
         },
+        // My test cases
         {
             {nameInput, "aabbbccccdddddefghijj"},
             {nameOutput, 12},

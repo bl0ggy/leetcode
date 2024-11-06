@@ -55,17 +55,12 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "nums";
+    const string nameInput1 = "values";
     const string nameInput2 = "k";
     const string nameInput3 = "multiplier";
     const string nameOutput = "final state";
     vector<TestCase<vector<int>, int, int, vector<int>>> testCases{
-        {
-            {nameInput1, {161209470}},
-            {nameInput2, 56851412},
-            {nameInput3, 39846},
-            {nameOutput, {198168519}},
-        },
+        // Original test cases
         {
             {nameInput1, {2, 1, 3, 5, 6}},
             {nameInput2, 5},
@@ -77,6 +72,13 @@ int main() {
             {nameInput2, 2},
             {nameInput3, 1000000},
             {nameOutput, {999999307, 999999993}},
+        },
+        // Submit test cases
+        {
+            {nameInput1, {161209470}},
+            {nameInput2, 56851412},
+            {nameInput3, 39846},
+            {nameOutput, {198168519}},
         },
     };
 

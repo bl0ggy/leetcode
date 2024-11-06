@@ -44,9 +44,10 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "word";
+    const string nameInput = "values";
     const string nameOutput = "minimum mountain removals";
     vector<TestCase<vector<int>, int>> testCases{
+        // Original test cases
         {
             {nameInput, {1, 3, 1}},
             {nameOutput, 0},
@@ -55,10 +56,11 @@ int main() {
             {nameInput, {2, 1, 1, 5, 6, 2, 3, 1}}, // length: 8
             {nameOutput, 3},
         },
+        // My test cases
         {
-            // Randoms drops
-            {nameInput, {1, 2, 3, 1, 4, 5, 1, 6, 1, 4, 1}}, // length: 11
-            {nameOutput, 3},
+            // Repeating sequence
+            {nameInput, {1, 2, 1, 2, 1, 2, 1, 2}}, // length: 8
+            {nameOutput, 5},
         },
         {
             // Succinct drops
@@ -66,7 +68,12 @@ int main() {
             {nameOutput, 4},
         },
         {
-            // Repeating sequences
+            // Randoms drops
+            {nameInput, {1, 2, 3, 1, 4, 5, 1, 6, 1, 4, 1}}, // length: 11
+            {nameOutput, 3},
+        },
+        {
+            // Repeating sequences with other values
             {nameInput, {1, 2, 3, 1, 2, 3, 1, 2, 3, 5, 6, 4, 1}}, // length = 13
             {nameOutput, 6},
         },

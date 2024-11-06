@@ -28,8 +28,9 @@ class Solution {
 int main() {
     const string nameInput1 = "s";
     const string nameInput2 = "goal";
-    const string nameOutput = "";
+    const string nameOutput = "rotatable string";
     vector<TestCase<string, string, bool>> testCases{
+        // Original test cases
         {
             {nameInput1, "abcde"},
             {nameInput2, "cdeab"},

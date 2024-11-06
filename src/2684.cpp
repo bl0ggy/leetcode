@@ -34,9 +34,10 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "word";
+    const string nameInput = "grid";
     const string nameOutput = "number of moves";
     vector<TestCase<vector<vector<int>>, int>> testCases{
+        // Original test cases
         {
             {nameInput, {{2, 4, 3, 5}, {5, 4, 9, 3}, {3, 4, 2, 11}, {10, 9, 13, 15}}},
             {nameOutput, 3},

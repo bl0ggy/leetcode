@@ -38,6 +38,7 @@ int main() {
     const string nameInput = "word";
     const string nameOutput = "compressed word";
     vector<TestCase<string, string>> testCases{
+        // Original test cases
         {
             {nameInput, "abcde"},
             {nameOutput, "1a1b1c1d1e"},
@@ -45,6 +46,11 @@ int main() {
         {
             {nameInput, "aaaaaaaaaaaaaabb"},
             {nameOutput, "9a5a2b"},
+        },
+        // My test cases
+        {
+            {nameInput, "w"},
+            {nameOutput, "1w"},
         },
     };
 

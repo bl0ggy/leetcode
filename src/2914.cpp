@@ -17,7 +17,7 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "s";
+    const string nameInput = "string";
     const string nameOutput = "minimum changes";
     vector<TestCase<string, int>> testCases{
         // Original tests cases
@@ -34,6 +34,10 @@ int main() {
             {nameOutput, 0},
         },
         // My tests cases
+        {
+            {nameInput, "000011"}, // -> "000011"
+            {nameOutput, 0},
+        },
         {
             {nameInput, "1000"}, // More 0s -> "0000" or "1100"
             {nameOutput, 1},

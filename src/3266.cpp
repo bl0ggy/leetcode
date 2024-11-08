@@ -55,36 +55,30 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "values";
-    const string nameInput2 = "k";
-    const string nameInput3 = "multiplier";
-    const string nameOutput = "final state";
-    vector<TestCase<vector<int>, int, int, vector<int>>> testCases{
+    TestSuite<vector<int>, vector<int>, int, int> testSuite("final state", "values", "k", "multiplier");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput1, {2, 1, 3, 5, 6}},
-            {nameInput2, 5},
-            {nameInput3, 2},
-            {nameOutput, {8, 4, 6, 5, 6}},
+            {8, 4, 6, 5, 6},
+            {2, 1, 3, 5, 6},
+            5,
+            2,
         },
         {
-            {nameInput1, {100000, 2000}},
-            {nameInput2, 2},
-            {nameInput3, 1000000},
-            {nameOutput, {999999307, 999999993}},
+            {999999307, 999999993},
+            {100000, 2000},
+            2,
+            1000000,
         },
         // Submit test cases
         {
-            {nameInput1, {161209470}},
-            {nameInput2, 56851412},
-            {nameInput3, 39846},
-            {nameOutput, {198168519}},
+            {198168519},
+            {161209470},
+            56851412,
+            39846,
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<int>, int, int, vector<int>> testCase) {
-        Solution solution;
-        return solution.getFinalState(testCase.input1, testCase.input2, testCase.input3);
-    });
+    return main.runTests(&Solution::getFinalState, testSuite);
 }

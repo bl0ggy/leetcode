@@ -13,29 +13,23 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "values";
-    const string nameInput2 = "k";
-    const string nameInput3 = "multiplier";
-    const string nameOutput = "final state";
-    vector<TestCase<vector<int>, int, int, vector<int>>> testCases{
+    TestSuite<vector<int>, vector<int>, int, int> testSuite("final state", "values", "k", "multiplier");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput1, {2, 1, 3, 5, 6}},
-            {nameInput2, 5},
-            {nameInput3, 2},
-            {nameOutput, {8, 4, 6, 5, 6}},
+            {8, 4, 6, 5, 6},
+            {2, 1, 3, 5, 6},
+            5,
+            2,
         },
         {
-            {nameInput1, {1, 2}},
-            {nameInput2, 3},
-            {nameInput3, 4},
-            {nameOutput, {16, 8}},
+            {16, 8},
+            {1, 2},
+            3,
+            4,
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<int>, int, int, vector<int>> testCase) {
-        Solution solution;
-        return solution.getFinalState(testCase.input1, testCase.input2, testCase.input3);
-    });
+    return main.runTests(&Solution::getFinalState, testSuite);
 }

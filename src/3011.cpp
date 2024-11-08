@@ -32,36 +32,34 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "values";
-    const string nameOutput = "can sort array";
-    vector<TestCase<vector<int>, bool>> testCases{
+    TestSuite<bool, vector<int>> testSuite("can sort array", "values");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, {8, 4, 2, 30, 15}},
-            {nameOutput, true},
+            true,
+            {8, 4, 2, 30, 15},
         },
         {
-            {nameInput, {1, 2, 3, 4, 5}},
-            {nameOutput, true},
+            true,
+            {1, 2, 3, 4, 5},
         },
         {
-            {nameInput, {3, 16, 8, 4, 2}},
-            {nameOutput, false},
+            false,
+            {3, 16, 8, 4, 2},
         },
         // My test cases
         {
-            {nameInput, {4, 5, 8}}, // Already sorted non-adjacent 1-2-1 set bits
-            {nameOutput, true},
+            // Already sorted non-adjacent 1-2-1 set bits
+            true,
+            {4, 5, 8},
         },
         {
-            {nameInput, {8, 5, 4}}, // Non sorted non-adjacent 1-2-1 set bits
-            {nameOutput, false},
+            // Non sorted non-adjacent 1-2-1 set bits
+            false,
+            {8, 5, 4},
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<int>, bool> testCase) {
-        Solution solution;
-        return solution.canSortArray(testCase.input);
-    });
+    return main.runTests(&Solution::canSortArray, testSuite);
 }

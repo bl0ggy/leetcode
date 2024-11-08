@@ -91,7 +91,7 @@ TreeNode *stringToTreeNode(std::string s) {
     return root;
 }
 
-std::string print(TreeNode *treeNode, bool root = true) {
+std::string toString(TreeNode *treeNode, bool root = true) {
     std::stringstream ss;
     std::queue<TreeNode *> nodes;
     nodes.push(treeNode);

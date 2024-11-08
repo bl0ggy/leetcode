@@ -26,26 +26,21 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "s";
-    const string nameInput2 = "goal";
-    const string nameOutput = "rotatable string";
-    vector<TestCase<string, string, bool>> testCases{
+    TestSuite<bool, string, string> testSuite("rotatable string", "s", "goal");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput1, "abcde"},
-            {nameInput2, "cdeab"},
-            {nameOutput, true},
+            true,
+            "abcde",
+            "cdeab",
         },
         {
-            {nameInput1, "abcde"},
-            {nameInput2, "abced"},
-            {nameOutput, false},
+            false,
+            "abcde",
+            "abced",
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<string, string, bool> testCase) {
-        Solution solution;
-        return solution.rotateString(testCase.input1, testCase.input2);
-    });
+    return main.runTests(&Solution::rotateString, testSuite);
 }

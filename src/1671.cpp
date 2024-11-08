@@ -44,63 +44,62 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "values";
-    const string nameOutput = "minimum mountain removals";
-    vector<TestCase<vector<int>, int>> testCases{
+    TestSuite<int, vector<int>> testSuite("minimum mountain removals", "values");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, {1, 3, 1}},
-            {nameOutput, 0},
+            //
+            0,
+            {1, 3, 1},
         },
         {
-            {nameInput, {2, 1, 1, 5, 6, 2, 3, 1}}, // length: 8
-            {nameOutput, 3},
+            //
+            3,
+            {2, 1, 1, 5, 6, 2, 3, 1}, // length: 8
         },
         // My test cases
         {
             // Repeating sequence
-            {nameInput, {1, 2, 1, 2, 1, 2, 1, 2}}, // length: 8
-            {nameOutput, 5},
+            5,
+            {1, 2, 1, 2, 1, 2, 1, 2}, // length: 8
         },
         {
             // Succinct drops
-            {nameInput, {1, 2, 3, 1, 1, 1, 1, 4, 5, 6, 4, 1}}, // length = 12
-            {nameOutput, 4},
+            4,
+            {1, 2, 3, 1, 1, 1, 1, 4, 5, 6, 4, 1}, // length = 12
         },
         {
             // Randoms drops
-            {nameInput, {1, 2, 3, 1, 4, 5, 1, 6, 1, 4, 1}}, // length: 11
-            {nameOutput, 3},
+            3,
+            {1, 2, 3, 1, 4, 5, 1, 6, 1, 4, 1}, // length: 11
         },
         {
             // Repeating sequences with other values
-            {nameInput, {1, 2, 3, 1, 2, 3, 1, 2, 3, 5, 6, 4, 1}}, // length = 13
-            {nameOutput, 6},
+            6,
+            {1, 2, 3, 1, 2, 3, 1, 2, 3, 5, 6, 4, 1}, // length = 13
         },
         {
             // Starting from the maximum is incorrect
-            {nameInput, {1, 2, 3, 4, 5, 4, 3, 2, 6, 1}}, // length = 10
-            {nameOutput, 1},
+            1,
+            {1, 2, 3, 4, 5, 4, 3, 2, 6, 1}, // length = 10
         },
         {
             // Starting from the minimum is incorrect
-            {nameInput, {4, 5, 6, 1, 5, 4, 3}}, // length = 7
-            {nameOutput, 1},
+            1,
+            {4, 5, 6, 1, 5, 4, 3}, // length = 7
         },
         {
             // Start with highest number
-            {nameInput, {9, 8, 1, 7, 6, 5, 4, 3, 2, 1}}, // length = 10
-            {nameOutput, 2},
+            2,
+            {9, 8, 1, 7, 6, 5, 4, 3, 2, 1}, // length = 10
         },
         {
-            {nameInput, {4, 5, 13, 17, 1, 7, 6, 11, 2, 8, 10, 15, 3, 9, 12, 14, 16}}, // length = 17
-            {nameOutput, 10},
+            //
+            10,
+            {4, 5, 13, 17, 1, 7, 6, 11, 2, 8, 10, 15, 3, 9, 12, 14, 16}, // length = 17
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<int>, int> testCase) {
-        Solution solution;
-        return solution.minimumMountainRemovals(testCase.input);
-    });
+    return main.runTests(&Solution::minimumMountainRemovals, testSuite);
 }

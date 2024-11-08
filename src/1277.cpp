@@ -22,23 +22,19 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "matrix";
-    const string nameOutput = "squares";
-    vector<TestCase<vector<vector<int>>, int>> testCases{
+    TestSuite<int, vector<vector<int>>> testSuite("squares", "matrix");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, {{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}}},
-            {nameOutput, 15},
+            15,
+            {{0, 1, 1, 1}, {1, 1, 1, 1}, {0, 1, 1, 1}},
         },
         {
-            {nameInput, {{1, 0, 1}, {1, 1, 0}, {1, 1, 0}}},
-            {nameOutput, 7},
+            7,
+            {{1, 0, 1}, {1, 1, 0}, {1, 1, 0}},
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<vector<int>>, int> testCase) {
-        Solution solution;
-        return solution.countSquares(testCase.input);
-    });
+    return main.runTests(&Solution::countSquares, testSuite);
 }

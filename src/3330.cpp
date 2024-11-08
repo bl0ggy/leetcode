@@ -15,32 +15,28 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "word";
-    const string nameOutput = "possible string count";
-    vector<TestCase<string, int>> testCases{
+    TestSuite<int, string> testSuite{"possible string count", "word"};
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, "abbcccc"},
-            {nameOutput, 5},
+            5,
+            "abbcccc",
         },
         {
-            {nameInput, "abcd"},
-            {nameOutput, 1},
+            1,
+            "abcd",
         },
         {
-            {nameInput, "aaaa"},
-            {nameOutput, 4},
+            4,
+            "aaaa",
         },
         // My test cases
         {
-            {nameInput, "aabbbccccdddddefghijj"},
-            {nameOutput, 12},
+            12,
+            "aabbbccccdddddefghijj",
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<string, int> testCase) {
-        Solution solution;
-        return solution.possibleStringCount(testCase.input);
-    });
+    return main.runTests(&Solution::possibleStringCount, testSuite);
 }

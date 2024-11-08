@@ -34,40 +34,36 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "values";
-    const string nameOutput = "longest square streak";
-    vector<TestCase<vector<int>, int>> testCases{
+    TestSuite<int, vector<int>> testSuite("longest square streak", "values");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, {4, 3, 6, 16, 8, 2}},
-            {nameOutput, 3},
+            3,
+            {4, 3, 6, 16, 8, 2},
         },
         {
-            {nameInput, {2, 3, 5, 6, 7}},
-            {nameOutput, -1},
+            -1,
+            {2, 3, 5, 6, 7},
         },
         // My test cases
         {
-            {nameInput, {2, 3}},
-            {nameOutput, -1},
+            -1,
+            {2, 3},
         },
         {
-            {nameInput, {4, 5}},
-            {nameOutput, -1},
+            -1,
+            {4, 5},
         },
         {
-            {nameInput, {2}},
-            {nameOutput, -1},
+            -1,
+            {2},
         },
         {
-            {nameInput, {3, 9, 81, 6561}},
-            {nameOutput, 4},
+            4,
+            {3, 9, 81, 6561},
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<int>, int> testCase) {
-        Solution solution;
-        return solution.longestSquareStreak(testCase.input);
-    });
+    return main.runTests(&Solution::longestSquareStreak, testSuite);
 }

@@ -35,28 +35,24 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "word";
-    const string nameOutput = "compressed word";
-    vector<TestCase<string, string>> testCases{
+    TestSuite<string, string> testSuite("compressed word", "word");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, "abcde"},
-            {nameOutput, "1a1b1c1d1e"},
+            "1a1b1c1d1e",
+            "abcde",
         },
         {
-            {nameInput, "aaaaaaaaaaaaaabb"},
-            {nameOutput, "9a5a2b"},
+            "9a5a2b",
+            "aaaaaaaaaaaaaabb",
         },
         // My test cases
         {
-            {nameInput, "w"},
-            {nameOutput, "1w"},
+            "1w",
+            "w",
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<string, string> &testCase) {
-        Solution solution;
-        return solution.compressedString(testCase.input);
-    });
+    return main.runTests(&Solution::compressedString, testSuite);
 }

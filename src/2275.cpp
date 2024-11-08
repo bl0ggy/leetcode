@@ -26,35 +26,33 @@ class Solution {
 int main() {
     const string nameInput = "candidates";
     const string nameOutput = "largest combination";
-    vector<TestCase<vector<int>, int>> testCases{
+    TestSuite<int, vector<int>> testSuite("largest combination", "candidates");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, {16, 17, 71, 62, 12, 24, 14}},
-            {nameOutput, 4},
+            4,
+            {16, 17, 71, 62, 12, 24, 14},
         },
         {
-            {nameInput, {8, 8}},
-            {nameOutput, 2},
+            2,
+            {8, 8},
         },
         // Submit test cases
         {
-            {nameInput, {84, 40, 66, 44, 91, 90, 1, 14, 73, 51, 47, 35, 18, 46, 18, 65, 55, 18, 16, 45, 43, 58, 90, 92, 91, 43, 44, 76, 85, 72, 24, 89, 60, 94, 81, 90, 86, 79, 84, 41, 41, 28, 44}},
-            {nameOutput, 28},
+            28,
+            {84, 40, 66, 44, 91, 90, 1, 14, 73, 51, 47, 35, 18, 46, 18, 65, 55, 18, 16, 45, 43, 58, 90, 92, 91, 43, 44, 76, 85, 72, 24, 89, 60, 94, 81, 90, 86, 79, 84, 41, 41, 28, 44},
         },
         // My tests
         {
-            {nameInput, {1, 1, 1, 1, 1, 1, 1, 1}},
-            {nameOutput, 8},
+            8,
+            {1, 1, 1, 1, 1, 1, 1, 1},
         },
         {
-            {nameInput, {1, 2, 4, 8, 16, 32, 64}},
-            {nameOutput, 1},
+            1,
+            {1, 2, 4, 8, 16, 32, 64},
         },
-    };
+    });
 
     Main main;
-    main.runTests(testCases, [](TestCase<vector<int>, int> &testCase) {
-        Solution solution;
-        return solution.largestCombination(testCase.input);
-    });
+    return main.runTests(&Solution::largestCombination, testSuite);
 }

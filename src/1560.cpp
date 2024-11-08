@@ -39,31 +39,26 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "n";
-    const string nameInput2 = "rounds";
-    const string nameOutput = "Most visited sections";
-    vector<TestCase<int, vector<int>, vector<int>>> testCases{
+    TestSuite<vector<int>, int, vector<int>> testSuite("most visited sections", "rounds", "n");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput1, 2},                           //
-            {nameInput2, {2, 1, 2, 1, 2, 1, 2, 1, 2}}, //
-            {nameOutput, {2}},                         //
+            {2},                         //
+            2,                           //
+            {2, 1, 2, 1, 2, 1, 2, 1, 2}, //
         },
         {
-            {nameInput1, 4},            //
-            {nameInput2, {1, 3, 1, 2}}, //
-            {nameOutput, {1, 2}},       //
+            {1, 2},       //
+            4,            //
+            {1, 3, 1, 2}, //
         },
         {
-            {nameInput1, 7},                     //
-            {nameInput2, {1, 3, 5, 7}},          //
-            {nameOutput, {1, 2, 3, 4, 5, 6, 7}}, //
+            {1, 2, 3, 4, 5, 6, 7}, //
+            7,                     //
+            {1, 3, 5, 7},          //
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<int, vector<int>, vector<int>> test) {
-        Solution solution;
-        return solution.mostVisited(test.input1, test.input2);
-    });
+    return main.runTests(&Solution::mostVisited, testSuite);
 }

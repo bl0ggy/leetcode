@@ -23,32 +23,28 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "sentence";
-    const string nameOutput = "is circular";
-    vector<TestCase<string, bool>> testCases{
+    TestSuite<bool, string> testSuite("is circular", "sentence");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, "leetcode exercises sound delightful"},
-            {nameOutput, true},
+            true,
+            "leetcode exercises sound delightful",
         },
         {
-            {nameInput, "eetcode"},
-            {nameOutput, true},
+            true,
+            "eetcode",
         },
         {
-            {nameInput, "Leetcode is cool"},
-            {nameOutput, false},
+            false,
+            "Leetcode is cool",
         },
         // Submit test cases
         {
-            {nameInput, "MuFoevIXCZzrpXeRmTssj lYSW U jM"},
-            {nameOutput, false},
+            false,
+            "MuFoevIXCZzrpXeRmTssj lYSW U jM",
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<string, bool> testCase) {
-        Solution solution;
-        return solution.isCircularSentence(testCase.input);
-    });
+    return main.runTests(&Solution::isCircularSentence, testSuite);
 }

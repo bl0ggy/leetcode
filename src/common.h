@@ -153,7 +153,6 @@ template <typename Output, typename... Inputs> class TestSuite {
     void print(TC &testCase) {
         printInputs(testCase.inputs);
         cout << "Expected output " << outputName << ": " << toString(testCase.expectedOutput) << endl;
-        cout << "Returned output " << outputName << ": " << toString(testCase.returnedOutput) << endl;
     }
 
   private:

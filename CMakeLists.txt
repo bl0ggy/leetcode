@@ -33,6 +33,7 @@ endif()
 include_directories(AFTER .)
 
 set(tests
+    1
     89
     796
     1233

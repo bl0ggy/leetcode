@@ -17,40 +17,36 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "string";
-    const string nameOutput = "minimum changes";
-    vector<TestCase<string, int>> testCases{
+    TestSuite<int, string> testSuite("mnimum changes", "string");
+    testSuite.addTestCases({
         // Original tests cases
         {
-            {nameInput, "1001"}, // -> "0011" or "1100"
-            {nameOutput, 2},
+            2,
+            "1001", // -> "0011" or "1100"
         },
         {
-            {nameInput, "10"}, // -> "00" or "11"
-            {nameOutput, 1},
+            1,
+            "10", // -> "00" or "11"
         },
         {
-            {nameInput, "0000"}, // -> "0000"
-            {nameOutput, 0},
+            0,
+            "0000", // -> "0000"
         },
         // My tests cases
         {
-            {nameInput, "000011"}, // -> "000011"
-            {nameOutput, 0},
+            0,
+            "000011", // -> "000011"
         },
         {
-            {nameInput, "1000"}, // More 0s -> "0000" or "1100"
-            {nameOutput, 1},
+            1,
+            "1000", // More 0s -> "0000" or "1100"
         },
         {
-            {nameInput, "0111"}, // More 1s -> "0011" or "1111"
-            {nameOutput, 1},
+            1,
+            "0111", // More 1s -> "0011" or "1111"
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<string, int> testCase) {
-        Solution solution;
-        return solution.minChanges(testCase.input);
-    });
+    return main.runTests(&Solution::minChanges, testSuite);
 }

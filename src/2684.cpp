@@ -34,23 +34,19 @@ class Solution {
 };
 
 int main() {
-    const string nameInput = "grid";
-    const string nameOutput = "number of moves";
-    vector<TestCase<vector<vector<int>>, int>> testCases{
+    TestSuite<int, vector<vector<int>>> testSuite("number of moves", "grid");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput, {{2, 4, 3, 5}, {5, 4, 9, 3}, {3, 4, 2, 11}, {10, 9, 13, 15}}},
-            {nameOutput, 3},
+            3,
+            {{2, 4, 3, 5}, {5, 4, 9, 3}, {3, 4, 2, 11}, {10, 9, 13, 15}},
         },
         {
-            {nameInput, {{3, 2, 4}, {2, 1, 9}, {1, 1, 7}}},
-            {nameOutput, 0},
+            0,
+            {{3, 2, 4}, {2, 1, 9}, {1, 1, 7}},
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<vector<int>>, int> testCase) {
-        Solution solution;
-        return solution.maxMoves(testCase.input);
-    });
+    return main.runTests(&Solution::maxMoves, testSuite);
 }

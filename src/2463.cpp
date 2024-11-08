@@ -31,75 +31,70 @@ class Solution {
 };
 
 int main() {
-    const string nameInput1 = "robots";
-    const string nameInput2 = "factories";
-    const string nameOutput = "minimum total distance";
-    vector<TestCase<vector<int>, vector<vector<int>>, int>> testCases{
+    TestSuite<int, vector<int>, vector<vector<int>>> testSuite("minimum total distance", "robots", "factories");
+    testSuite.addTestCases({
         // Original test cases
         {
-            {nameInput1, {0, 4, 6}},
-            {nameInput2, {{2, 2}, {6, 2}}},
-            {nameOutput, 4},
+            4,
+            {0, 4, 6},
+            {{2, 2}, {6, 2}},
         },
         {
-            {nameInput1, {1, -1}},
-            {nameInput2, {{-2, 2}, {2, 1}}},
-            {nameOutput, 2},
+            2,
+            {1, -1},
+            {{-2, 2}, {2, 1}},
         },
         // Submit test cases
         {
-            {nameInput1, {789300819, -600989788, 529140594, -592135328, -840831288, 209726656, -671200998}},
-            {nameInput2, {{-865262624, 6}, {-717666169, 0}, {725929046, 2}, {449443632, 3}, {-912630111, 0}, {270903707, 3}, {-769206598, 2}, {-299780916, 4}, {-159433745, 5}, {-467185764, 3}, {849991650, 7}, {-292158515, 6}, {940410553, 6}, {258278787, 0}, {83034539, 2}, {54441577, 3}, {-235385712, 2}, {75791769, 3}}},
-            {nameOutput, 582755368},
+            582755368,
+            {789300819, -600989788, 529140594, -592135328, -840831288, 209726656, -671200998},
+            {{-865262624, 6}, {-717666169, 0}, {725929046, 2}, {449443632, 3}, {-912630111, 0}, {270903707, 3}, {-769206598, 2}, {-299780916, 4}, {-159433745, 5}, {-467185764, 3}, {849991650, 7}, {-292158515, 6}, {940410553, 6}, {258278787, 0}, {83034539, 2}, {54441577, 3}, {-235385712, 2}, {75791769, 3}},
         },
         // My test cases
         {
             // r--r------ //
             // -------f-f //
-            {nameInput1, {1, 4}},
-            {nameInput2, {{8, 1}, {10, 1}}},
-            {nameOutput, 13},
+            13,
+            {1, 4},
+            {{8, 1}, {10, 1}},
         },
         {
             // -------r-r //
             // f--f------ //
-            {nameInput1, {8, 10}},
-            {nameInput2, {{1, 1}, {4, 1}}},
-            {nameOutput, 13},
+            13,
+            {8, 10},
+            {{1, 1}, {4, 1}},
         },
         {
             // r------r-- //
             // ---f-----f //
-            {nameInput1, {1, 8}},
-            {nameInput2, {{4, 1}, {10, 1}}},
-            {nameOutput, 5},
+            5,
+            {1, 8},
+            {{4, 1}, {10, 1}},
         },
         {
             // ---r-----r //
             // f------f-- //
-            {nameInput1, {4, 10}},
-            {nameInput2, {{1, 1}, {8, 1}}},
-            {nameOutput, 5},
+            5,
+            {4, 10},
+            {{1, 1}, {8, 1}},
         },
         {
             // r--------r //
             // ---f---f-- //
-            {nameInput1, {1, 10}},
-            {nameInput2, {{4, 1}, {8, 1}}},
-            {nameOutput, 5},
+            5,
+            {1, 10},
+            {{4, 1}, {8, 1}},
         },
         {
             // ---r---r-- //
             // f--------f //
-            {nameInput1, {4, 8}},
-            {nameInput2, {{1, 1}, {10, 1}}},
-            {nameOutput, 5},
+            5,
+            {4, 8},
+            {{1, 1}, {10, 1}},
         },
-    };
+    });
 
     Main main;
-    return main.runTests(testCases, [](TestCase<vector<int>, vector<vector<int>>, int> testCase) {
-        Solution solution;
-        return solution.minimumTotalDistance(testCase.input1, testCase.input2);
-    });
+    return main.runTests(&Solution::minimumTotalDistance, testSuite);
 }

@@ -58,4 +58,7 @@ foreach(x IN LISTS tests)
     add_executable(${x}
         src/${x}.cpp
     )
+    set_target_properties(${x} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests
+    )
 endforeach()

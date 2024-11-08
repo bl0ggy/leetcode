@@ -1,13 +1,20 @@
 #pragma once
 
+#include <cassert>
 #include <iostream>
 #include <sstream>
 #include <unordered_set>
 #include <vector>
 
+#include "treenode.h"
+
 using namespace std;
 
-inline string print(string s) {
+const string Reset = "\e[0m";
+const string Error = "\e[31m";
+const string Success = "\e[32m";
+const string Warning = "\e[33m";
+inline string toString(string s) {
     stringstream ss;
     ss << s;
     string str = ss.str();
@@ -17,7 +24,7 @@ inline string print(string s) {
     return str;
 }
 
-inline string print(long long i) {
+inline string toString(long long i) {
     stringstream ss;
     ss << i;
     string str = ss.str();
@@ -27,7 +34,7 @@ inline string print(long long i) {
     return str;
 }
 
-inline string print(vector<int> vec) {
+inline string toString(vector<int> vec) {
     stringstream ss;
     ss << "{";
     for (auto it = vec.begin(); it != vec.end(); it++) {
@@ -44,7 +51,7 @@ inline string print(vector<int> vec) {
     return str;
 }
 
-inline string print(vector<string> vec) {
+inline string toString(vector<string> vec) {
     stringstream ss;
     ss << "{";
     for (auto it = vec.begin(); it != vec.end(); it++) {
@@ -61,7 +68,7 @@ inline string print(vector<string> vec) {
     return str;
 }
 
-inline string print(vector<vector<int>> grid) {
+inline string toString(vector<vector<int>> grid) {
     stringstream ss;
     ss << "{";
     for (auto it = grid.begin(); it != grid.end(); it++) {
@@ -85,7 +92,7 @@ inline string print(vector<vector<int>> grid) {
     return str;
 }
 
-inline string print(vector<pair<int, int>> v) {
+inline string toString(vector<pair<int, int>> v) {
     stringstream ss;
     ss << "{";
     for (auto p = v.begin(); p != v.end(); p++) {
@@ -101,108 +108,88 @@ inline string print(vector<pair<int, int>> v) {
     return str;
 }
 
-template <typename Type> struct InputOutputType {
-    string name;
-    Type value;
-
-    operator Type &() {
-        return value;
-    };
-
-    Type operator=(Type val) {
-        value = val;
-        return val;
-    }
-
-    bool operator==(InputOutputType<Type> &other) {
-        return value == other.value;
-    }
-};
-
-template <typename...> class TestCase;
-
-template <typename Input, typename Output> class TestCase<Input, Output> {
+template <typename Output, typename... Input> class TestCase {
   public:
-    // string inputName = InputName;
-    InputOutputType<Input> input;
-    InputOutputType<Output> expectedOutput;
-    InputOutputType<Output> returnedOutput;
+    Output expectedOutput;
+    tuple<Input...> inputs;
+    Output returnedOutput;
 
-    inline void printFlattened() {
-        cout << input.name << ": ";
-        cout << print(input);
-        cout << endl;
-        cout << "Expected " << expectedOutput.name << ": ";
-        cout << print(expectedOutput);
-        cout << endl;
+    TestCase(Output expectedOutput, Input... inputs) : expectedOutput(expectedOutput), inputs(std::make_tuple(inputs...)), returnedOutput() {
+    }
+
+    tuple<Input...> getInputs() {
+        return inputs;
     }
 };
 
-template <typename Input1, typename Input2, typename Output> class TestCase<Input1, Input2, Output> {
+// Limitation: Impssible to add the variadic at the first position
+template <typename Output, typename... Inputs> class TestSuite {
   public:
-    // string inputName = InputName;
-    InputOutputType<Input1> input1;
-    InputOutputType<Input2> input2;
-    InputOutputType<Output> expectedOutput;
-    InputOutputType<Output> returnedOutput;
+    using TC = TestCase<Output, Inputs...>;
+    vector<TC> testCases;
+    string outputName;
+    array<string, sizeof...(Inputs)> inputNames;
 
-    // inline void printFlattened();
-    inline void printFlattened() {
-        cout << input1.name << ": ";
-        cout << print(input1);
-        cout << endl;
-        cout << input2.name << ": ";
-        cout << print(input2);
-        cout << endl;
-        cout << "Expected " << expectedOutput.name << ": ";
-        cout << print(expectedOutput);
-        cout << endl;
+    template <typename OutputName, typename... InputNames> TestSuite(OutputName outputName, InputNames &&...inputNames) {
+        this->outputName = outputName;
+        auto lambda = [this]<std::size_t... I>(std::index_sequence<I...>, auto &&...args) { ((this->inputNames[I] = std::forward<InputNames>(args)), ...); };
+        lambda(std::make_index_sequence<sizeof...(Inputs)>{}, std::forward<InputNames>(inputNames)...);
+    }
+
+    void addTestCases(vector<TC> testCases) {
+        this->testCases = testCases;
+    }
+
+    void print() {
+        for (int i = 0; i < testCases.size(); i++) {
+            print(testCases[i]);
+        }
+    }
+    void print(size_t i) {
+        assert(i < testCases.size());
+        print(testCases[i]);
+    }
+    void print(TC &testCase) {
+        printInputs(testCase.inputs);
+        cout << "Expected output " << outputName << ": " << toString(testCase.expectedOutput) << endl;
+        cout << "Returned output " << outputName << ": " << toString(testCase.returnedOutput) << endl;
+    }
+
+  private:
+    template <typename TupleT, std::size_t... Is> void printInputsImp(const TupleT &tp, std::index_sequence<Is...>) {
+        auto printElem = [this](size_t i, const auto &x) { cout << "Input " << toString(inputNames[i]) << ": " << toString(x) << endl; };
+        (printElem(Is, std::get<Is>(tp)), ...);
+    }
+
+    template <typename TupleT, std::size_t TupSize = std::tuple_size_v<TupleT>> void printInputs(const TupleT &tp) {
+        printInputsImp(tp, std::make_index_sequence<TupSize>{});
     }
 };
 
-template <typename Input1, typename Input2, typename Input3, typename Output> class TestCase<Input1, Input2, Input3, Output> {
-  public:
-    // string inputName = InputName;
-    InputOutputType<Input1> input1;
-    InputOutputType<Input2> input2;
-    InputOutputType<Input2> input3;
-    InputOutputType<Output> expectedOutput;
-    InputOutputType<Output> returnedOutput;
-
-    // inline void printFlattened();
-    inline void printFlattened() {
-        cout << input1.name << ": ";
-        cout << print(input1);
-        cout << endl;
-        cout << input2.name << ": ";
-        cout << print(input2);
-        cout << endl;
-        cout << input3.name << ": ";
-        cout << print(input3);
-        cout << endl;
-        cout << "Expected " << expectedOutput.name << ": ";
-        cout << print(expectedOutput);
-        cout << endl;
-    }
-};
+class Solution;
 
 class Main {
   public:
-    template <typename TestCaseType, typename CallbackType> int runTests(vector<TestCaseType> &testCases, const CallbackType solutionCallback) {
+    template <typename Solution = Solution, typename Func, typename TestSuiteType> int runTests(Func testFunction, TestSuiteType &testSuite) {
         preRun();
 
-        for (auto &test : testCases) {
-            test.printFlattened();
-            test.returnedOutput = solutionCallback(test);
-            if (test.returnedOutput == test.expectedOutput) {
-                cout << "\e[32;m  => Pass\n";
+        if (testSuite.testCases.size() == 0) {
+            cout << Error << "No tests found" << endl;
+            exit(1);
+        }
+        for (auto &testCase : testSuite.testCases) {
+            testSuite.print(testCase);
+            Solution solution;
+            applyTestCase(&solution, testFunction, testCase, testCase.getInputs());
+            if (testCase.returnedOutput == testCase.expectedOutput) {
+                cout << Success << "  => Pass\n";
             } else {
                 fails++;
-                cout << "\e[31;m  => Failed : returned ";
-                cout << print(test.returnedOutput);
+                cout << Error << "  => Failed : returned ";
+                cout << toString(testCase.returnedOutput);
                 cout << "\n";
             }
-            cout << "\e[0;m\n";
+            cout << Reset << "\n";
         }
 
         postRun();
@@ -210,6 +197,13 @@ class Main {
     }
 
   protected:
+    template <typename Solution, typename Func, typename TestCaseType, typename... Inputs> void applyTestCase(Solution *solution, Func testFunction, TestCaseType &testCase, tuple<Inputs...> inputs) {
+        apply([&](auto &&...args) { runTestsInternal(solution, testFunction, testCase, args...); }, inputs);
+    }
+    template <typename Solution, typename Func, typename TestCaseType, typename... Inputs> void runTestsInternal(Solution *solution, Func testFunction, TestCaseType &testCase, Inputs &&...inputs) {
+        testCase.returnedOutput = (solution->*testFunction)(inputs...);
+    }
+
     chrono::time_point<chrono::system_clock> start;
     chrono::time_point<chrono::system_clock> end;
     int fails;
@@ -223,6 +217,11 @@ class Main {
         end = chrono::system_clock::now();
         auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - this->start);
         cout << "\nElapsed: " << elapsed.count() << "ms\n";
-        cout << "Total fails: " << fails << endl;
+        if (fails == 0) {
+            cout << Success << "Total fails: " << fails << endl;
+        } else {
+            cout << Error << "Total fails: " << fails << endl;
+        }
+        cout << Reset;
     }
 };

@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <unordered_set>
 #include <vector>

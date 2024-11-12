@@ -109,6 +109,14 @@ inline string toString(vector<pair<int, int>> v) {
     return str;
 }
 
+inline string toString(map<int, vector<int>> map) {
+    stringstream ss;
+    for (auto pair : map) {
+        ss << pair.first << " " << toString(pair.second) << endl;
+    }
+    return ss.str();
+}
+
 template <typename Output, typename... Input> class TestCase {
   public:
     Output expectedOutput;

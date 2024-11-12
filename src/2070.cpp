@@ -3,16 +3,28 @@
 class Solution {
   public:
     vector<int> maximumBeauty(vector<vector<int>> &items, vector<int> &queries) {
-        int itemsSize = items.size();
         int queriesSize = queries.size();
-        vector<int> answer(queriesSize);
+        vector<int> answer(queriesSize, 0);
+        map<int, vector<int>> queriesMap; // key: price, value: vec of indexes
 
-        for (int i = 0; i < itemsSize; i++) {
-            for (int j = 0; j < queriesSize; j++) {
-                if (items[i][0] <= queries[j]) {
-                    answer[j] = max(answer[j], items[i][1]);
-                }
+        sort(items.begin(), items.end());
+        for (int q = 0; q < queriesSize; q++) {
+            queriesMap[queries[q]].push_back(q);
+        }
+
+        // Map is sorted by key
+        auto mapIt = queriesMap.begin();
+        auto itemIt = items.begin();
+        int maxBeauty = 0;
+        while (mapIt != queriesMap.end()) {
+            while (itemIt != items.end() && (*itemIt)[0] <= mapIt->first) {
+                maxBeauty = max(maxBeauty, (*itemIt)[1]);
+                itemIt++;
             }
+            for (auto it : mapIt->second) {
+                answer[it] = maxBeauty;
+            }
+            mapIt++;
         }
 
         return answer;

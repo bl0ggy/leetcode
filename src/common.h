@@ -117,6 +117,17 @@ inline string toString(map<int, vector<int>> map) {
     return ss.str();
 }
 
+inline string toString(stack<int> stack) {
+    vector<int> vec(stack.size());
+    int i = stack.size() - 1;
+    while (stack.size() > 0) {
+        vec[i] = stack.top();
+        stack.pop();
+        i--;
+    }
+    return toString(vec);
+}
+
 template <typename Output, typename... Input> class TestCase {
   public:
     Output expectedOutput;

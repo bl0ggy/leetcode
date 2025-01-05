@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "listnode.h"
 #include "treenode.h"
 
 using namespace std;
@@ -146,6 +147,7 @@ template <typename Output, typename... Input> class TestCase {
 template <typename Output, typename... Inputs> class TestSuite {
   public:
     using TC = TestCase<Output, Inputs...>;
+    using OutputType = Output;
     vector<TC> testCases;
     string outputName;
     array<string, sizeof...(Inputs)> inputNames;
@@ -200,7 +202,13 @@ class Main {
             testSuite.print(testCase);
             Solution solution;
             applyTestCase(&solution, testFunction, testCase, testCase.getInputs());
-            if (testCase.returnedOutput == testCase.expectedOutput) {
+            bool comparison;
+            if constexpr (std::is_pointer<typename TestSuiteType::OutputType>::value) {
+                comparison = *(testCase.returnedOutput) == *(testCase.expectedOutput);
+            } else {
+                comparison = testCase.returnedOutput == testCase.expectedOutput;
+            }
+            if (comparison) {
                 cout << Success << "  => Pass\n";
             } else {
                 fails++;

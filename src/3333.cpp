@@ -113,6 +113,23 @@ void printTest(TestCase test) {
 
 int main() {
     vector<TestCase> testCases{
+        // Original test cases
+        {
+            .word = "aabbccdd",
+            .k = 7,
+            .expectedOutput = 5,
+        },
+        {
+            .word = "aabbccdd",
+            .k = 8,
+            .expectedOutput = 1,
+        },
+        {
+            .word = "aaabbb",
+            .k = 3,
+            .expectedOutput = 8,
+        },
+        // My test cases
         {
             .word = "abbcccc",
             .k = 6,
@@ -132,21 +149,6 @@ int main() {
             .word = "aabbbccccdddddefghijj",
             .k = 19,
             .expectedOutput = 19,
-        },
-        {
-            .word = "aabbccdd",
-            .k = 7,
-            .expectedOutput = 5,
-        },
-        {
-            .word = "aabbccdd",
-            .k = 8,
-            .expectedOutput = 1,
-        },
-        {
-            .word = "aaabbb",
-            .k = 3,
-            .expectedOutput = 8,
         },
     };
 

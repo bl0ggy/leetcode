@@ -19,6 +19,7 @@ class Solution {
 int main() {
     TestSuite<vector<int>, vector<int>, int> testSuite("two sum", "values", "target");
     testSuite.addTestCases({
+        // Original test cases
         {
             {0, 1},
             {2, 7, 11, 15},

@@ -5,6 +5,9 @@
 #include <sstream>
 #include <string>
 
+struct TreeNode;
+std::string toString(TreeNode *treeNode, bool root = true);
+
 // Definition for a binary tree node.
 struct TreeNode {
     int val;
@@ -20,6 +23,9 @@ struct TreeNode {
     TreeNode(TreeNode &&node) {
         this->left = node.left;
         this->right = node.right;
+    }
+    bool operator==(TreeNode &a) {
+        return toString(this) == toString(&a);
     }
     ~TreeNode() {
         if (left != nullptr) {
@@ -98,7 +104,7 @@ TreeNode *stringToTreeNode(std::string s) {
     return root;
 }
 
-std::string toString(TreeNode *treeNode, bool root = true) {
+std::string toString(TreeNode *treeNode, bool) {
     std::stringstream ss;
     std::queue<TreeNode *> nodes;
     nodes.push(treeNode);

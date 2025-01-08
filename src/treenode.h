@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-//* Definition for a binary tree node.
+// Definition for a binary tree node.
 struct TreeNode {
     int val;
     TreeNode *left;
@@ -22,15 +22,21 @@ struct TreeNode {
         this->right = node.right;
     }
     ~TreeNode() {
-        if (left != nullptr)
+        if (left != nullptr) {
             free(left);
-        if (right != nullptr)
+        }
+        if (right != nullptr) {
             free(right);
+        }
     }
 };
 
 TreeNode *stringToTreeNode(std::string s) {
-    s = s.substr(1, s.size() - 1); // Remove brackets
+    s = s.substr(1, s.size() - 2); // Remove brackets
+    if (s.length() == 0) {
+        return nullptr;
+    }
+
     std::queue<TreeNode *> nodes;
     size_t pos = std::string::npos;
     if (s[0] == 'n') {
@@ -38,6 +44,7 @@ TreeNode *stringToTreeNode(std::string s) {
     } else {
         nodes.push(new TreeNode(stoi(s)));
     }
+
     while ((pos = s.find(',')) != std::string::npos) {
         s = s.substr(pos + 1);
         if (s[0] == 'n') {

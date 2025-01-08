@@ -50,6 +50,22 @@ inline string toString(int i) {
     return toString((long long)i);
 }
 
+inline string toString(vector<long long> vec) {
+    stringstream ss;
+    ss << "{";
+    for (auto it = vec.begin(); it != vec.end(); it++) {
+        ss << *it;
+        if (it + 1 != vec.end()) {
+            ss << ", ";
+        }
+    }
+    ss << "}";
+    string str = ss.str();
+    if (str.length() > 80) {
+        str = str.substr(0, 80) + "...";
+    }
+    return str;
+}
 inline string toString(vector<int> vec) {
     stringstream ss;
     ss << "{";

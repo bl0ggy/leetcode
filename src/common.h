@@ -26,6 +26,16 @@ inline string toString(string s) {
     return str;
 }
 
+inline string toString(double i) {
+    stringstream ss;
+    ss << i;
+    string str = ss.str();
+    if (str.length() > 80) {
+        str = str.substr(0, 80) + "...";
+    }
+    return str;
+}
+
 inline string toString(long long i) {
     stringstream ss;
     ss << i;
@@ -34,6 +44,10 @@ inline string toString(long long i) {
         str = str.substr(0, 80) + "...";
     }
     return str;
+}
+
+inline string toString(int i) {
+    return toString((long long)i);
 }
 
 inline string toString(vector<int> vec) {

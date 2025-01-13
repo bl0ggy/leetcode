@@ -17,33 +17,19 @@ const string Error = "\e[31m";
 const string Success = "\e[32m";
 const string Warning = "\e[33m";
 inline string toString(string s) {
-    stringstream ss;
-    ss << s;
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return s;
 }
 
 inline string toString(double i) {
     stringstream ss;
     ss << i;
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 
 inline string toString(long long i) {
     stringstream ss;
     ss << i;
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 
 inline string toString(int i) {
@@ -60,11 +46,7 @@ inline string toString(vector<long long> vec) {
         }
     }
     ss << "}";
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 inline string toString(vector<int> vec) {
     stringstream ss;
@@ -76,11 +58,7 @@ inline string toString(vector<int> vec) {
         }
     }
     ss << "}";
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 
 inline string toString(vector<string> vec) {
@@ -94,10 +72,7 @@ inline string toString(vector<string> vec) {
     }
     ss << "}";
     string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 
 inline string toString(vector<vector<int>> grid) {
@@ -117,11 +92,7 @@ inline string toString(vector<vector<int>> grid) {
         }
     }
     ss << "}";
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 
 inline string toString(vector<pair<int, int>> v) {
@@ -133,11 +104,7 @@ inline string toString(vector<pair<int, int>> v) {
             ss << ", ";
         }
     }
-    string str = ss.str();
-    if (str.length() > 80) {
-        str = str.substr(0, 80) + "...";
-    }
-    return str;
+    return ss.str();
 }
 
 inline string toString(map<int, vector<int>> map) {

@@ -1,19 +1,58 @@
 #include "common.h"
-#include <unordered_set>
 
 class Solution {
   public:
+    // Brute force using set
+    // string longestNiceSubstring(string s) {
+    //     int length = s.length();
+    //     int maxLength = 0;
+    //     int maxLengthPos = -1;
+    //     for (int i = 0; i < length - maxLength; i++) {
+    //         unordered_set<char> charSet;
+    //         bool newFound = false;
+    //         for (int j = i; j < length; j++) {
+    //             charSet.insert(s[j]);
+    //             int size = j - i + 1;
+    //             if (size > maxLength && check(charSet)) {
+    //                 newFound = true;
+    //                 maxLength = size;
+    //                 maxLengthPos = i;
+    //             }
+    //         }
+    //         if (newFound) {
+    //             i += maxLength - 1;
+    //         }
+    //     }
+    //
+    //     return maxLength == 0 ? "" : s.substr(maxLengthPos, maxLength);
+    // }
+    //
+    // bool check(unordered_set<char> &charSet) {
+    //     for (auto c : charSet) {
+    //         if ((c >= 'a' && !charSet.contains(c - 32)) || (c < 'a' && !charSet.contains(c + 32))) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+
+    // Brute force using bit mask
     string longestNiceSubstring(string s) {
         int length = s.length();
         int maxLength = 0;
         int maxLengthPos = -1;
         for (int i = 0; i < length - maxLength; i++) {
-            unordered_set<char> charSet;
+            int maskLower = 0, maskUpper = 0;
             bool newFound = false;
             for (int j = i; j < length; j++) {
-                charSet.insert(s[j]);
+                char c = s[j];
+                if (c >= 'a') {
+                    maskLower |= 1 << (c - 'a');
+                } else {
+                    maskUpper |= 1 << (c - 'A');
+                }
                 int size = j - i + 1;
-                if (size > maxLength && check(charSet)) {
+                if (size > maxLength && (maskLower == maskUpper)) {
                     newFound = true;
                     maxLength = size;
                     maxLengthPos = i;
@@ -25,15 +64,6 @@ class Solution {
         }
 
         return maxLength == 0 ? "" : s.substr(maxLengthPos, maxLength);
-    }
-
-    bool check(unordered_set<char> &charSet) {
-        for (auto c : charSet) {
-            if ((c >= 'a' && !charSet.contains(c - 32)) || (c < 'a' && !charSet.contains(c + 32))) {
-                return false;
-            }
-        }
-        return true;
     }
 };
 

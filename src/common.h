@@ -107,6 +107,21 @@ inline string toString(vector<pair<int, int>> v) {
     return ss.str();
 }
 
+inline string toString(unordered_set<char> s) {
+    auto it = s.begin();
+    stringstream ss;
+    ss << "[ ";
+    while (it != s.end()) {
+        if (it != s.begin()) {
+            ss << ", ";
+        }
+        ss << *it;
+        it++;
+    }
+    ss << " ]";
+    return ss.str();
+}
+
 inline string toString(map<int, vector<int>> map) {
     stringstream ss;
     for (auto pair : map) {

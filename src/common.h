@@ -79,16 +79,9 @@ inline string toString(vector<vector<int>> grid) {
     stringstream ss;
     ss << "{";
     for (auto it = grid.begin(); it != grid.end(); it++) {
-        ss << "{";
-        for (auto it2 = it->begin(); it2 != it->end(); it2++) {
-            ss << *it2;
-            if (it2 + 1 != it->end()) {
-                ss << ", ";
-            }
-        }
-        ss << "}";
+        ss << " " << toString(*it);
         if (it + 1 != grid.end()) {
-            ss << ", ";
+            ss << ",\n";
         }
     }
     ss << "}";

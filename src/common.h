@@ -75,11 +75,30 @@ inline string toString(vector<string> vec) {
     return ss.str();
 }
 
+inline string toString(vector<vector<long long>> grid) {
+    stringstream ss;
+    ss << "{";
+    for (auto it = grid.begin(); it != grid.end(); it++) {
+        if (it != grid.begin()) {
+            ss << " ";
+        }
+        ss << toString(*it);
+        if (it + 1 != grid.end()) {
+            ss << ",\n";
+        }
+    }
+    ss << "}";
+    return ss.str();
+}
+
 inline string toString(vector<vector<int>> grid) {
     stringstream ss;
     ss << "{";
     for (auto it = grid.begin(); it != grid.end(); it++) {
-        ss << " " << toString(*it);
+        if (it != grid.begin()) {
+            ss << " ";
+        }
+        ss << toString(*it);
         if (it + 1 != grid.end()) {
             ss << ",\n";
         }

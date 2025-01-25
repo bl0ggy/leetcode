@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <list>
 #include <map>
 #include <sstream>
 #include <unordered_set>
@@ -34,6 +35,20 @@ inline string toString(long long i) {
 
 inline string toString(int i) {
     return toString((long long)i);
+}
+
+inline string toString(list<int> list) {
+    stringstream ss;
+    auto end = list.end();
+    ss << "{";
+    for (auto it = list.begin(); it != end; it++) {
+        ss << *it;
+        if (next(it) != end) {
+            ss << ", ";
+        }
+    }
+    ss << "}";
+    return ss.str();
 }
 
 inline string toString(vector<long long> vec) {
@@ -134,7 +149,23 @@ inline string toString(unordered_set<char> s) {
     return ss.str();
 }
 
+inline string toString(unordered_map<int, int> map) {
+    stringstream ss;
+    for (auto pair : map) {
+        ss << pair.first << " " << toString(pair.second) << endl;
+    }
+    return ss.str();
+}
+
 inline string toString(map<int, vector<int>> map) {
+    stringstream ss;
+    for (auto pair : map) {
+        ss << pair.first << " " << toString(pair.second) << endl;
+    }
+    return ss.str();
+}
+
+inline string toString(unordered_map<int, list<int>> map) {
     stringstream ss;
     for (auto pair : map) {
         ss << pair.first << " " << toString(pair.second) << endl;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <set>
 #include <sstream>
 #include <unordered_set>
 #include <vector>
@@ -134,6 +135,14 @@ inline string toString(vector<pair<int, int>> v) {
     return ss.str();
 }
 
+inline string toString(set<int> s) {
+    stringstream ss;
+    for (auto i : s) {
+        ss << i << endl;
+    }
+    return ss.str();
+}
+
 inline string toString(unordered_set<char> s) {
     auto it = s.begin();
     stringstream ss;
@@ -150,10 +159,17 @@ inline string toString(unordered_set<char> s) {
 }
 
 inline string toString(unordered_map<int, int> map) {
+    auto it = map.begin();
     stringstream ss;
-    for (auto pair : map) {
-        ss << pair.first << " " << toString(pair.second) << endl;
+    ss << "[";
+    while (it != map.end()) {
+        if (it != map.begin()) {
+            ss << ",\n";
+        }
+        ss << "[" << (it->first) << "," << (it->second) << "]";
+        it++;
     }
+    ss << "]";
     return ss.str();
 }
 

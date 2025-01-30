@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <sstream>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -52,6 +53,18 @@ inline string toString(list<int> list) {
     return ss.str();
 }
 
+inline string toString(vector<bool> vec) {
+    stringstream ss;
+    ss << "{";
+    for (auto it = vec.begin(); it != vec.end(); it++) {
+        ss << *it;
+        if (it + 1 != vec.end()) {
+            ss << ", ";
+        }
+    }
+    ss << "}";
+    return ss.str();
+}
 inline string toString(vector<long long> vec) {
     stringstream ss;
     ss << "{";
@@ -135,11 +148,36 @@ inline string toString(vector<pair<int, int>> v) {
     return ss.str();
 }
 
+inline string toString(deque<int> vec) {
+    stringstream ss;
+    ss << "{";
+    for (auto it = vec.begin(); it != vec.end(); it++) {
+        ss << *it;
+        if (it + 1 != vec.end()) {
+            ss << ", ";
+        }
+    }
+    ss << "}";
+    return ss.str();
+}
+
 inline string toString(set<int> s) {
     stringstream ss;
+    ss << "{ ";
     for (auto i : s) {
-        ss << i << endl;
+        ss << i << " ";
     }
+    ss << "}";
+    return ss.str();
+}
+
+inline string toString(unordered_set<int> s) {
+    stringstream ss;
+    ss << "{ ";
+    for (auto i : s) {
+        ss << i << " ";
+    }
+    ss << "}";
     return ss.str();
 }
 
@@ -155,6 +193,19 @@ inline string toString(unordered_set<char> s) {
         it++;
     }
     ss << " ]";
+    return ss.str();
+}
+
+inline string toString(vector<unordered_set<int>> set) {
+    stringstream ss;
+    ss << "{";
+    for (auto p = set.begin(); p != set.end(); p++) {
+        ss << toString(*p);
+        if (p + 1 != set.end()) {
+            ss << ", ";
+        }
+    }
+    ss << "}";
     return ss.str();
 }
 
@@ -182,6 +233,14 @@ inline string toString(map<int, vector<int>> map) {
 }
 
 inline string toString(unordered_map<int, list<int>> map) {
+    stringstream ss;
+    for (auto pair : map) {
+        ss << pair.first << " " << toString(pair.second) << endl;
+    }
+    return ss.str();
+}
+
+inline string toString(map<int, list<int>> map) {
     stringstream ss;
     for (auto pair : map) {
         ss << pair.first << " " << toString(pair.second) << endl;

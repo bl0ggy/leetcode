@@ -21,12 +21,18 @@ const string Error = "\e[31m";
 const string Success = "\e[32m";
 const string Warning = "\e[33m";
 
+// Lets us check if a template type Test is a container of type Ref
+// e.g. with template<typename Value> ...
+//      is_specialization<Value, vector>::value will be true if Value is an std::vector of any type
+template <typename Test, template <typename...> class Ref> struct is_specialization : std::false_type {};
+template <template <typename...> class Ref, typename... Args> struct is_specialization<Ref<Args...>, Ref> : std::true_type {};
+
 // ++++++++++++++++++++++++++++++++ //
 // Definition of toString functions //
 // ++++++++++++++++++++++++++++++++ //
 // Basic types
 inline string toString(string s) {
-    return s;
+    return "\"" + s + "\"";
 }
 inline string toString(double i) {
     return to_string(i);
@@ -40,9 +46,9 @@ inline string toString(int i) {
 // Forward declarations
 template <typename First, typename Second> inline string toString(pair<First, Second> obj);
 template <typename Value, size_t Size> inline string toString(array<Value, Size> obj);
-template <typename Value> inline string toString(vector<Value> obj);
-template <typename Value> inline string toString(list<Value> obj);
-template <typename Value> inline string toString(deque<Value> obj);
+template <typename Value> inline string toString(vector<Value> obj, int level = 0);
+template <typename Value> inline string toString(list<Value> obj, int level = 0);
+template <typename Value> inline string toString(deque<Value> obj, int level = 0);
 template <typename Value> inline string toString(set<Value> obj);
 template <typename Value> inline string toString(unordered_set<Value> obj);
 template <typename Key, typename Value> inline string toString(map<Key, Value> obj);
@@ -54,38 +60,50 @@ template <typename First, typename Second> inline string toString(pair<First, Se
     ss << "[" << toString(obj.first) << "," << toString(obj.second) << "]";
     return ss.str();
 }
-template <typename Value, size_t Size> inline string toString(array<Value, Size> obj) {
+template <typename Value, size_t Size> inline string toString(array<Value, Size> obj, int level) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
         if (it != obj.begin()) {
-            ss << ", ";
+            ss << "," << (level == 0 ? "\n" : " ");
         }
-        ss << toString(*it);
+        if constexpr (is_specialization<Value, vector>::value) {
+            ss << toString(*it, level + 1);
+        } else {
+            ss << toString(*it);
+        }
     }
     ss << "]";
     return ss.str();
 }
-template <typename Value> inline string toString(vector<Value> obj) {
+template <typename Value> inline string toString(vector<Value> obj, int level) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
         if (it != obj.begin()) {
-            ss << ", ";
+            ss << "," << (level == 0 ? "\n" : " ");
         }
-        ss << toString(*it);
+        if constexpr (is_specialization<Value, vector>::value) {
+            ss << toString(*it, level + 1);
+        } else {
+            ss << toString(*it);
+        }
     }
     ss << "]";
     return ss.str();
 }
-template <typename Value> inline string toString(list<Value> obj) {
+template <typename Value> inline string toString(list<Value> obj, int level) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
         if (it != obj.begin()) {
-            ss << ", ";
+            ss << "," << (level == 0 ? "\n" : " ");
         }
-        ss << toString(*it);
+        if constexpr (is_specialization<Value, vector>::value) {
+            ss << toString(*it, level + 1);
+        } else {
+            ss << toString(*it);
+        }
     }
     ss << "]";
     return ss.str();
@@ -131,7 +149,7 @@ template <typename Key, typename Value> inline string toString(map<Key, Value> o
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
         if (it != obj.begin()) {
-            ss << ", ";
+            ss << "\n";
         }
         ss << toString(*it);
     }
@@ -143,7 +161,7 @@ template <typename Key, typename Value> inline string toString(unordered_map<Key
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
         if (it != obj.begin()) {
-            ss << ", ";
+            ss << "\n";
         }
         ss << toString(*it);
     }

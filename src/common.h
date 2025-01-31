@@ -20,6 +20,11 @@ const string Reset = "\e[0m";
 const string Error = "\e[31m";
 const string Success = "\e[32m";
 const string Warning = "\e[33m";
+
+// ++++++++++++++++++++++++++++++++ //
+// Definition of toString functions //
+// ++++++++++++++++++++++++++++++++ //
+// Basic types
 inline string toString(string s) {
     return s;
 }
@@ -32,7 +37,24 @@ inline string toString(long long i) {
 inline string toString(int i) {
     return to_string(i);
 }
-template <typename T> inline string toString(list<T> obj) {
+// Forward declarations
+template <typename First, typename Second> inline string toString(pair<First, Second> obj);
+template <typename Value, size_t Size> inline string toString(array<Value, Size> obj);
+template <typename Value> inline string toString(vector<Value> obj);
+template <typename Value> inline string toString(list<Value> obj);
+template <typename Value> inline string toString(deque<Value> obj);
+template <typename Value> inline string toString(set<Value> obj);
+template <typename Value> inline string toString(unordered_set<Value> obj);
+template <typename Key, typename Value> inline string toString(map<Key, Value> obj);
+template <typename Key, typename Value> inline string toString(unordered_map<Key, Value> obj);
+template <typename Value> inline string toString(stack<Value> obj);
+// Implementations
+template <typename First, typename Second> inline string toString(pair<First, Second> obj) {
+    stringstream ss;
+    ss << "[" << toString(obj.first) << "," << toString(obj.second) << "]";
+    return ss.str();
+}
+template <typename Value, size_t Size> inline string toString(array<Value, Size> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
@@ -44,7 +66,7 @@ template <typename T> inline string toString(list<T> obj) {
     ss << "]";
     return ss.str();
 }
-template <typename T> inline string toString(vector<T> obj) {
+template <typename Value> inline string toString(vector<Value> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
@@ -56,7 +78,7 @@ template <typename T> inline string toString(vector<T> obj) {
     ss << "]";
     return ss.str();
 }
-template <typename T, size_t S> inline string toString(array<T, S> obj) {
+template <typename Value> inline string toString(list<Value> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
@@ -68,7 +90,7 @@ template <typename T, size_t S> inline string toString(array<T, S> obj) {
     ss << "]";
     return ss.str();
 }
-template <typename T> inline string toString(deque<T> obj) {
+template <typename Value> inline string toString(deque<Value> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
@@ -80,7 +102,7 @@ template <typename T> inline string toString(deque<T> obj) {
     ss << "]";
     return ss.str();
 }
-template <typename T> inline string toString(set<T> obj) {
+template <typename Value> inline string toString(set<Value> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
@@ -92,7 +114,7 @@ template <typename T> inline string toString(set<T> obj) {
     ss << "]";
     return ss.str();
 }
-template <typename T> inline string toString(unordered_set<T> obj) {
+template <typename Value> inline string toString(unordered_set<Value> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
@@ -128,7 +150,7 @@ template <typename Key, typename Value> inline string toString(unordered_map<Key
     ss << "]";
     return ss.str();
 }
-template <typename T> inline string toString(stack<T> obj) {
+template <typename Value> inline string toString(stack<Value> obj) {
     stringstream ss;
     ss << "[";
     while (obj.size()) {
@@ -142,6 +164,10 @@ template <typename T> inline string toString(stack<T> obj) {
     return ss.str();
 }
 
+// +++++++++++++++++++++++++++++ //
+// Definition of Testing classes //
+// +++++++++++++++++++++++++++++ //
+// Limitation: Impssible to add the variadic at the first position
 template <typename Output, typename... Input> class TestCase {
   public:
     Output expectedOutput;
@@ -156,7 +182,6 @@ template <typename Output, typename... Input> class TestCase {
     }
 };
 
-// Limitation: Impssible to add the variadic at the first position
 template <typename Output, typename... Inputs> class TestSuite {
   public:
     using TC = TestCase<Output, Inputs...>;

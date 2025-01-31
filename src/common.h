@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <sstream>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -22,241 +23,123 @@ const string Warning = "\e[33m";
 inline string toString(string s) {
     return s;
 }
-
 inline string toString(double i) {
-    stringstream ss;
-    ss << i;
-    return ss.str();
+    return to_string(i);
 }
-
 inline string toString(long long i) {
-    stringstream ss;
-    ss << i;
-    return ss.str();
+    return to_string(i);
 }
-
 inline string toString(int i) {
-    return toString((long long)i);
+    return to_string(i);
 }
-
-inline string toString(list<int> list) {
-    stringstream ss;
-    auto end = list.end();
-    ss << "{";
-    for (auto it = list.begin(); it != end; it++) {
-        ss << *it;
-        if (next(it) != end) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(vector<bool> vec) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        ss << *it;
-        if (it + 1 != vec.end()) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-inline string toString(vector<long long> vec) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        ss << *it;
-        if (it + 1 != vec.end()) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-inline string toString(vector<int> vec) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        ss << *it;
-        if (it + 1 != vec.end()) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(vector<string> vec) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        ss << *it;
-        if (it + 1 != vec.end()) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    string str = ss.str();
-    return ss.str();
-}
-
-inline string toString(vector<vector<long long>> grid) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = grid.begin(); it != grid.end(); it++) {
-        if (it != grid.begin()) {
-            ss << " ";
-        }
-        ss << toString(*it);
-        if (it + 1 != grid.end()) {
-            ss << ",\n";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(vector<vector<int>> grid) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = grid.begin(); it != grid.end(); it++) {
-        if (it != grid.begin()) {
-            ss << " ";
-        }
-        ss << toString(*it);
-        if (it + 1 != grid.end()) {
-            ss << ",\n";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(vector<pair<int, int>> v) {
-    stringstream ss;
-    ss << "{";
-    for (auto p = v.begin(); p != v.end(); p++) {
-        ss << "{" << p->first << ", " << p->second << "}";
-        if (p + 1 != v.end()) {
-            ss << ", ";
-        }
-    }
-    return ss.str();
-}
-
-inline string toString(deque<int> vec) {
-    stringstream ss;
-    ss << "{";
-    for (auto it = vec.begin(); it != vec.end(); it++) {
-        ss << *it;
-        if (it + 1 != vec.end()) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(set<int> s) {
-    stringstream ss;
-    ss << "{ ";
-    for (auto i : s) {
-        ss << i << " ";
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(unordered_set<int> s) {
-    stringstream ss;
-    ss << "{ ";
-    for (auto i : s) {
-        ss << i << " ";
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(unordered_set<char> s) {
-    auto it = s.begin();
-    stringstream ss;
-    ss << "[ ";
-    while (it != s.end()) {
-        if (it != s.begin()) {
-            ss << ", ";
-        }
-        ss << *it;
-        it++;
-    }
-    ss << " ]";
-    return ss.str();
-}
-
-inline string toString(vector<unordered_set<int>> set) {
-    stringstream ss;
-    ss << "{";
-    for (auto p = set.begin(); p != set.end(); p++) {
-        ss << toString(*p);
-        if (p + 1 != set.end()) {
-            ss << ", ";
-        }
-    }
-    ss << "}";
-    return ss.str();
-}
-
-inline string toString(unordered_map<int, int> map) {
-    auto it = map.begin();
+template <typename T> inline string toString(list<T> obj) {
     stringstream ss;
     ss << "[";
-    while (it != map.end()) {
-        if (it != map.begin()) {
-            ss << ",\n";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
         }
-        ss << "[" << (it->first) << "," << (it->second) << "]";
-        it++;
+        ss << toString(*it);
     }
     ss << "]";
     return ss.str();
 }
-
-inline string toString(map<int, vector<int>> map) {
+template <typename T> inline string toString(vector<T> obj) {
     stringstream ss;
-    for (auto pair : map) {
-        ss << pair.first << " " << toString(pair.second) << endl;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
     }
+    ss << "]";
     return ss.str();
 }
-
-inline string toString(unordered_map<int, list<int>> map) {
+template <typename T, size_t S> inline string toString(array<T, S> obj) {
     stringstream ss;
-    for (auto pair : map) {
-        ss << pair.first << " " << toString(pair.second) << endl;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
     }
+    ss << "]";
     return ss.str();
 }
-
-inline string toString(map<int, list<int>> map) {
+template <typename T> inline string toString(deque<T> obj) {
     stringstream ss;
-    for (auto pair : map) {
-        ss << pair.first << " " << toString(pair.second) << endl;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
     }
+    ss << "]";
     return ss.str();
 }
-
-inline string toString(stack<int> stack) {
-    vector<int> vec(stack.size());
-    int i = stack.size() - 1;
-    while (stack.size() > 0) {
-        vec[i] = stack.top();
-        stack.pop();
-        i--;
+template <typename T> inline string toString(set<T> obj) {
+    stringstream ss;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
     }
-    return toString(vec);
+    ss << "]";
+    return ss.str();
+}
+template <typename T> inline string toString(unordered_set<T> obj) {
+    stringstream ss;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
+    }
+    ss << "]";
+    return ss.str();
+}
+template <typename Key, typename Value> inline string toString(map<Key, Value> obj) {
+    stringstream ss;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
+    }
+    ss << "]";
+    return ss.str();
+}
+template <typename Key, typename Value> inline string toString(unordered_map<Key, Value> obj) {
+    stringstream ss;
+    ss << "[";
+    for (auto it = obj.begin(); it != obj.end(); it++) {
+        if (it != obj.begin()) {
+            ss << ", ";
+        }
+        ss << toString(*it);
+    }
+    ss << "]";
+    return ss.str();
+}
+template <typename T> inline string toString(stack<T> obj) {
+    stringstream ss;
+    ss << "[";
+    while (obj.size()) {
+        ss << obj.top();
+        obj.pop();
+        if (obj.Size() > 0) {
+            ss << "," << endl;
+        }
+    }
+    ss << "]";
+    return ss.str();
 }
 
 template <typename Output, typename... Input> class TestCase {

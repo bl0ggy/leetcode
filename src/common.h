@@ -31,17 +31,20 @@ template <template <typename...> class Ref, typename... Args> struct is_speciali
 // Definition of toString functions //
 // ++++++++++++++++++++++++++++++++ //
 // Basic types
-inline string toString(string s) {
-    return "\"" + s + "\"";
-}
-inline string toString(double i) {
-    return to_string(i);
+inline string toString(bool b) {
+    return b ? "true" : "false";
 }
 inline string toString(long long i) {
     return to_string(i);
 }
 inline string toString(int i) {
     return to_string(i);
+}
+inline string toString(double i) {
+    return to_string(i);
+}
+inline string toString(string s) {
+    return "\"" + s + "\"";
 }
 // Forward declarations
 template <typename First, typename Second> inline string toString(pair<First, Second> obj);

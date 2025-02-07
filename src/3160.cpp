@@ -2,12 +2,10 @@
 
 class Solution {
   public:
-    // Memory limit exceeded!
     vector<int> queryResults(int limit, vector<vector<int>> &queries) {
         int queriesSize = queries.size();
-        int numberOfBalls = limit + 1;
-        map<int, int> colorCount;
-        vector<int> ballToColor(numberOfBalls, 0);
+        unordered_map<int, int> colorCount;
+        unordered_map<int, int> ballToColor;
         vector<int> ans(queriesSize, 0);
         int currentDistinctColors = 0;
         for (int i = 0; i < queriesSize; i++) {

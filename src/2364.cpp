@@ -2,19 +2,23 @@
 
 class Solution {
   public:
-    // Time limit exceeded
     long long countBadPairs(vector<int> &nums) {
-        int size = nums.size();
+        long long size = nums.size();
+        vector<int> diffs(size);
+        unordered_map<int, long long> count;
         long long sum = 0;
-        for (int j = 1; j < size; j++) {
-            for (int i = 0; i < j; i++) {
-                if (j - i != nums[j] - nums[i]) {
-                    sum++;
-                }
+        for (int i = 0; i < size; i++) {
+            count[nums[i] - i]++;
+        }
+
+        long long numberOfPairs = size * (size - 1) / 2;
+        for (auto [k, v] : count) {
+            if (v > 1) {
+                sum += (v) * (v - 1) / 2;
             }
         }
 
-        return sum;
+        return numberOfPairs - sum;
     }
 };
 

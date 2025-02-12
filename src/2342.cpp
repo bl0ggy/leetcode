@@ -2,29 +2,30 @@
 
 class Solution {
   public:
-    // Quite slow
     int maximumSum(vector<int> &nums) {
         int size = nums.size();
-        unordered_map<int, list<int>> digitsSums;
+        vector<pair<int, int>> digitsSums(82, {0, 0}); // Max sum of digits for 10e9 is 9*9=81
 
         for (int i = 0; i < size; i++) {
             int n = nums[i];
             int sum = 0;
-            int factor = 1000000000;
             while (n > 0) {
-                int digit = n / factor;
-                sum += n / factor;
-                n -= digit * factor;
-                factor /= 10;
+                sum += n % 10;
+                n /= 10;
             }
-            digitsSums[sum].push_back(nums[i]);
+            n = nums[i];
+            if (n > digitsSums[sum].first) {
+                digitsSums[sum].second = digitsSums[sum].first;
+                digitsSums[sum].first = n;
+            } else if (n > digitsSums[sum].second) {
+                digitsSums[sum].second = n;
+            }
         }
 
         int maxSum = -1;
-        for (auto [key, value] : digitsSums) {
-            if (value.size() >= 2) {
-                value.sort(greater<int>());
-                maxSum = max(maxSum, (*value.begin()) + (*(next(value.begin()))));
+        for (auto [first, second] : digitsSums) {
+            if (second > 0) {
+                maxSum = max(maxSum, first + second);
             }
         }
 
@@ -48,6 +49,10 @@ int main() {
         {
             12,
             {4, 6, 10, 6},
+        },
+        {
+            973,
+            {229, 398, 269, 317, 420, 464, 491, 218, 439, 153, 482, 169, 411, 93, 147, 50, 347, 210, 251, 366, 401},
         },
         // My test cases
     });

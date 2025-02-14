@@ -1,46 +1,29 @@
 #include "common.h"
 
-// Faster but still slow
+// O(1)
 class ProductOfNumbers {
-    vector<int> nums;
-    int index = -1;
-    bool full = false;
+    vector<int> products;
 
   public:
     ProductOfNumbers() {
-        nums.resize(40001);
+        products.push_back(1);
     }
 
     void add(int num) {
         if (num == 0) {
-            index = -1;
-            full = false;
+            products.clear();
+            products.push_back(1);
             return;
         }
-
-        index++;
-        if (index >= 40001) {
-            index = 0;
-            full = true;
-        }
-        nums[index] = num;
-        cout << index << " " << num << endl;
+        products.push_back(num * products.back());
     }
 
     int getProduct(int k) {
-        int product = 1;
-        if (full) {
-            for (int i = 0; i < 40001; i++) {
-                product *= nums[i];
-            }
-        } else if (k > index + 1) {
+        int lastIndex = products.size() - 1;
+        if (k > lastIndex) {
             return 0;
-        } else {
-            for (int i = index; i > index - k; i--) {
-                product *= nums[i];
-            }
         }
-        return product;
+        return products.back() / products[lastIndex - k];
     }
 };
 

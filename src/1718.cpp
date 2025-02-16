@@ -1,42 +1,47 @@
 #include "common.h"
 
 class Solution {
-    vector<int> ans;
-
   public:
-    // Time limit exceeded
     vector<int> constructDistancedSequence(int n) {
-        int size = 2 * n - 1;
-        ans = vector<int>(size, 0);
-        vector<int> current(size, 0);
-        next(current, size, n);
-        auto it = find(ans.begin(), ans.end(), 0);
-        *it = 1;
+        vector<int> ans(2 * n - 1, 0);
+        vector<bool> usedNumbers(n + 1, false);
+        next(0, n, ans, usedNumbers);
         return ans;
     }
 
-    void next(vector<int> &sequence, int size, int nextNumber) {
-        if (nextNumber == 1) {
-            for (int i = 0; i < size; i++) {
-                if (ans[i] < sequence[i]) {
-                    ans = sequence;
-                    return;
-                } else if (ans[i] > sequence[i]) {
-                    return;
-                }
-            }
+    bool next(int currentIndex, int n, vector<int> &sequence, vector<bool> &usedNumbers) {
+        if (currentIndex >= sequence.size()) {
+            return true;
+        }
+        if (sequence[currentIndex] != 0) {
+            return next(currentIndex + 1, n, sequence, usedNumbers);
         }
 
-        for (int i = 0; i < size - nextNumber; i++) {
-            int nextI = i + nextNumber;
-            if (sequence[i] == 0 && nextI < size && sequence[nextI] == 0) {
-                sequence[i] = nextNumber;
-                sequence[nextI] = nextNumber;
-                next(sequence, size, nextNumber - 1);
-                sequence[i] = 0;
-                sequence[nextI] = 0;
+        for (int number = n; number > 0; number--) {
+            if (usedNumbers[number]) {
+                continue;
             }
+
+            usedNumbers[number] = true;
+            sequence[currentIndex] = number;
+
+            if (number == 1) {
+                if (next(currentIndex + 1, n, sequence, usedNumbers)) {
+                    return true;
+                }
+            } else if (currentIndex + number < sequence.size() && sequence[currentIndex + number] == 0) {
+                sequence[currentIndex + number] = number;
+                if (next(currentIndex + 1, n, sequence, usedNumbers)) {
+                    return true;
+                }
+                sequence[currentIndex + number] = 0;
+            }
+
+            sequence[currentIndex] = 0;
+            usedNumbers[number] = false;
         }
+
+        return false;
     }
 };
 

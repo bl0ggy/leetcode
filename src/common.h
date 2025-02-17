@@ -48,11 +48,11 @@ inline string toString(string s) {
 }
 // Forward declarations
 template <typename First, typename Second> inline string toString(pair<First, Second> obj);
-template <typename Value, size_t Size> inline string toString(array<Value, Size> obj);
+template <typename Value, size_t Size> inline string toString(array<Value, Size> obj, int level = 0);
 template <typename Value> inline string toString(vector<Value> obj, int level = 0);
 template <typename Value> inline string toString(list<Value> obj, int level = 0);
 template <typename Value> inline string toString(deque<Value> obj, int level = 0);
-template <typename Value> inline string toString(set<Value> obj);
+template <typename Value, typename Compare> inline string toString(set<Value, Compare> obj);
 template <typename Value> inline string toString(unordered_set<Value> obj);
 template <typename Key, typename Value> inline string toString(map<Key, Value> obj);
 template <typename Key, typename Value> inline string toString(unordered_map<Key, Value> obj);
@@ -123,7 +123,7 @@ template <typename Value> inline string toString(deque<Value> obj) {
     ss << "]";
     return ss.str();
 }
-template <typename Value> inline string toString(set<Value> obj) {
+template <typename Value, typename Compare> inline string toString(set<Value, Compare> obj) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {

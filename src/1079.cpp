@@ -1,24 +1,29 @@
 #include "common.h"
 
 class Solution {
-    unordered_set<string> existingPossibilities;
-
   public:
-    // Slow
     int numTilePossibilities(string tiles) {
-        findPossibilities("", tiles);
-        return existingPossibilities.size() - 1; // Remove empty string
+        array<int, 26> chars;
+        for (auto &c : chars) {
+            c = 0;
+        }
+        for (char c : tiles) {
+            chars[c - 'A']++;
+        }
+        return findPossibilities(chars);
     }
-    void findPossibilities(string currentChars, string remainingChars) {
-        int length = remainingChars.length();
-        if (length == 0) {
-            existingPossibilities.insert(currentChars);
-            return;
+    int findPossibilities(array<int, 26> &chars) {
+        int count = 0;
+        for (int i = 0; i < 26; i++) {
+            if (chars[i] <= 0) {
+                continue;
+            }
+            chars[i]--;
+            count++;
+            count += findPossibilities(chars);
+            chars[i]++;
         }
-        for (int i = 0; i < remainingChars.length(); i++) {
-            findPossibilities(currentChars + remainingChars[i], remainingChars.substr(0, i) + remainingChars.substr(i + 1));
-            findPossibilities(currentChars, remainingChars.substr(0, i) + remainingChars.substr(i + 1));
-        }
+        return count;
     }
 };
 

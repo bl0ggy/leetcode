@@ -43,6 +43,9 @@ inline string toString(int i) {
 inline string toString(double i) {
     return to_string(i);
 }
+inline string toString(char c) {
+    return string{c};
+}
 inline string toString(string s) {
     return "\"" + s + "\"";
 }

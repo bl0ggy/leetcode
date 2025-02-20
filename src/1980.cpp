@@ -78,6 +78,11 @@ int main() {
         },
     });
 
+    auto validationFunction = [](TestCase<string, vector<string>> &testCase) -> bool {
+        auto v = get<0>(testCase.getInputs());
+        return find(v.begin(), v.end(), testCase.returnedOutput) == v.end();
+    };
+
     Main main;
-    main.runTests(&Solution::findDifferentBinaryString, testSuite);
+    main.runTests(&Solution::findDifferentBinaryString, testSuite, validationFunction);
 }

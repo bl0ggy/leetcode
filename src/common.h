@@ -253,7 +253,8 @@ class Solution;
 
 class Main {
   public:
-    template <typename Solution = Solution, typename Func, typename TestSuiteType> int runTests(Func testFunction, TestSuiteType &testSuite) {
+    template <typename Solution = Solution, typename Func, typename TestSuiteType> //
+    int runTests(Func testFunction, TestSuiteType &testSuite, const function<bool(typename TestSuiteType::TC &testCase)> &validationFunction = nullptr) {
         preRun();
 
         if (testSuite.testCases.size() == 0) {
@@ -264,13 +265,17 @@ class Main {
             testSuite.print(testCase);
             Solution solution;
             applyTestCase(&solution, testFunction, testCase, testCase.getInputs());
-            bool comparison;
-            if constexpr (std::is_pointer<typename TestSuiteType::OutputType>::value) {
-                comparison = *(testCase.returnedOutput) == *(testCase.expectedOutput);
+            bool validation;
+            if (validationFunction != nullptr) {
+                validation = validationFunction(testCase);
             } else {
-                comparison = testCase.returnedOutput == testCase.expectedOutput;
+                if constexpr (std::is_pointer<typename TestSuiteType::OutputType>::value) {
+                    validation = *(testCase.returnedOutput) == *(testCase.expectedOutput);
+                } else {
+                    validation = testCase.returnedOutput == testCase.expectedOutput;
+                }
             }
-            if (comparison) {
+            if (validation) {
                 cout << Success << "  => Pass\n";
             } else {
                 fails++;

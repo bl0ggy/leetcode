@@ -114,14 +114,18 @@ template <typename Value> inline string toString(list<Value> obj, int level) {
     ss << "]";
     return ss.str();
 }
-template <typename Value> inline string toString(deque<Value> obj) {
+template <typename Value> inline string toString(deque<Value> obj, int level) {
     stringstream ss;
     ss << "[";
     for (auto it = obj.begin(); it != obj.end(); it++) {
         if (it != obj.begin()) {
             ss << ", ";
         }
-        ss << toString(*it);
+        if constexpr (is_specialization<Value, vector>::value) {
+            ss << toString(*it, level + 1);
+        } else {
+            ss << toString(*it);
+        }
     }
     ss << "]";
     return ss.str();

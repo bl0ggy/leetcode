@@ -5,36 +5,33 @@ class Solution {
     int lenLongestFibSubseq(vector<int> &arr) {
         int ans = 0;
         int size = arr.size();
-        for (int i = 0; i < size; i++) {
-            ans = max(ans, recurse(arr, 1, i));
+
+        for (int prevI = 0; prevI < size - 1; prevI++) {
+            for (int i = prevI + 1; i < size; i++) {
+                int currentPrevI = prevI;
+                int currentI = i;
+                int next = currentI + 1;
+                int count = 2;
+                while (next < size) {
+                    int toFind = arr[currentI] + arr[currentPrevI];
+                    while (next < size && arr[next] < toFind) {
+                        next++;
+                    }
+                    if (next < size && arr[next] == toFind) {
+                        count++;
+                        currentPrevI = currentI;
+                        currentI = next;
+                        next++;
+                    } else {
+                        break;
+                    }
+                }
+
+                ans = max(ans, count > 2 ? count : 0);
+            }
         }
 
         return ans;
-    }
-
-    int recurse(vector<int> &arr, int count, int i, int prevI = -1) {
-        int size = arr.size();
-        if (prevI == -1) {
-            int ans = 0;
-            for (int nextI = i + 1; nextI < size; nextI++) {
-                ans = max(ans, recurse(arr, count + 1, nextI, i));
-            }
-            return ans;
-        }
-
-        if (prevI + 1 < size) {
-            int toFind = arr[i] + arr[prevI];
-            for (int k = i + 1; k < size; k++) {
-                if (arr[k] == toFind) {
-                    return recurse(arr, count + 1, k, i);
-                }
-                if (arr[k] > toFind) {
-                    break;
-                }
-            }
-        }
-
-        return count > 2 ? count : 0;
     }
 };
 

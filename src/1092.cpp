@@ -2,72 +2,53 @@
 
 class Solution {
   public:
+    // Helped with editorial
     string shortestCommonSupersequence(string str1, string str2) {
-        string ans = "";
-
-        string a = slide(str1, str2, false);
-        string c = slide(str2, str1, false);
-        string b = slide(str1, str2, true);
-        string d = slide(str2, str1, true);
-
-        ans = a.length() <= b.length() ? a : b;
-        ans = ans.length() <= c.length() ? ans : c;
-        ans = ans.length() <= d.length() ? ans : d;
-        return ans;
-    }
-
-    // Slides str1 over str2
-    string slide(string str1, string str2, bool reverse) {
-        if (reverse) {
-            std::reverse(str1.begin(), str1.end());
-            std::reverse(str2.begin(), str2.end());
+        int length1 = str1.length(); // rows
+        int length2 = str2.length(); // cols
+        vector<vector<int>> dp(length1 + 1, vector<int>(length2 + 1, 0));
+        for (int row = 0; row <= length1; row++) {
+            dp[row][0] = row;
         }
-        int length1 = str1.length(), length2 = str2.length();
-        int p1 = 0, p2 = 0;
-        pair<int, int> lastMatch = {-1, -1}; // p1,p2
-        string ans = "";
-        for (int startP1 = 0; lastMatch.second == -1 && startP1 < length1; startP1++) {
-            p1 = startP1;
-            p2 = 0;
-            ans = str1.substr(0, startP1);
-            while (p1 < length1 && lastMatch.second + 1 < length2) {
-                bool match = str1[p1] == str2[p2];
-                if (match) {
-                    if (p1 > lastMatch.first + 1) {
-                        ans += str1.substr(lastMatch.first + 1, p1 - (lastMatch.first + 1));
-                    }
-                    if (p2 > lastMatch.second + 1) {
-                        ans += str2.substr(lastMatch.second + 1, p2 - (lastMatch.second + 1));
-                    }
-                    ans += str1[p1];
-                    lastMatch.first = p1;
-                    lastMatch.second = p2;
-                    p1++;
-                    p2++;
+        for (int col = 0; col <= length2; col++) {
+            dp[0][col] = col;
+        }
+
+        for (int row = 1; row <= length1; row++) {
+            for (int col = 1; col <= length2; col++) {
+                if (str1[row - 1] == str2[col - 1]) {
+                    dp[row][col] = dp[row - 1][col - 1] + 1;
                 } else {
-                    p2++;
-                }
-                if (p1 < length1 && p2 == length2) {
-                    if (!match) {
-                        p1++;
-                    }
-                    p2 = lastMatch.second + 1;
+                    dp[row][col] = min(dp[row - 1][col], dp[row][col - 1]) + 1;
                 }
             }
         }
 
-        if (lastMatch.second == -1) {
-            return str1 + str2;
+        string ans = "";
+        int row = length1, col = length2;
+        while (row > 0 && col > 0) {
+            if (str1[row - 1] == str2[col - 1]) {
+                ans += str1[row - 1];
+                row--;
+                col--;
+            } else if (dp[row - 1][col] < dp[row][col - 1]) {
+                ans += str1[row - 1];
+                row--;
+            } else {
+                ans += str2[col - 1];
+                col--;
+            }
         }
-        if (lastMatch.first + 1 < length1) {
-            ans += str1.substr(lastMatch.first + 1);
+        while (row > 0) {
+            ans += str1[row - 1];
+            row--;
         }
-        if (lastMatch.second + 1 < length2) {
-            ans += str2.substr(lastMatch.second + 1);
+        while (col > 0) {
+            ans += str2[col - 1];
+            col--;
         }
-        if (reverse) {
-            std::reverse(ans.begin(), ans.end());
-        }
+
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };

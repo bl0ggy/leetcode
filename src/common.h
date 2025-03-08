@@ -34,7 +34,19 @@ template <template <typename...> class Ref, typename... Args> struct is_speciali
 inline string toString(bool b) {
     return b ? "true" : "false";
 }
+inline string toString(unsigned long long i) {
+    return to_string(i);
+}
 inline string toString(long long i) {
+    return to_string(i);
+}
+inline string toString(unsigned long i) {
+    return to_string(i);
+}
+inline string toString(long i) {
+    return to_string(i);
+}
+inline string toString(unsigned int i) {
     return to_string(i);
 }
 inline string toString(int i) {

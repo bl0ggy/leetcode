@@ -1,7 +1,5 @@
 #!/bin/bash
 
-reset
-
 # Specify the directory containing the build.ninja file
 build_dir="build"
 # Specify the directory containing the binaries

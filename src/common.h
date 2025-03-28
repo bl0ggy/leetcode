@@ -1,11 +1,14 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <map>
 #include <set>
 #include <sstream>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>

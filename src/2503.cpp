@@ -13,20 +13,17 @@ class Solution {
 
         int queryIndex = 0;
         vector<vector<bool>> visited(height, vector<bool>(width));
-        deque<pair<int, int>> nextQueue, currentQueue;
+        using qType = pair<int, pair<int, int>>;
+        priority_queue<qType, vector<qType>, greater<>> lesserQueue; // cellValue,(row,col))
         int points = 0;
         visited[0][0] = true;
-        nextQueue.push_front({0, 0});
+        lesserQueue.push({grid[0][0], {0, 0}});
         while (queryIndex < queries.size()) {
-            swap(nextQueue, currentQueue);
-            while (!currentQueue.empty()) {
-                auto [currentRow, currentColumn] = currentQueue.front();
-                currentQueue.pop_front();
-
-                if (grid[currentRow][currentColumn] >= sortedQueries[queryIndex]) {
-                    nextQueue.push_back({currentRow, currentColumn});
-                    continue;
-                }
+            int queryValue = sortedQueries[queryIndex];
+            while (!lesserQueue.empty() && queryValue > lesserQueue.top().first) {
+                auto [queueValue, cellRef] = lesserQueue.top();
+                auto [currentRow, currentColumn] = cellRef;
+                lesserQueue.pop();
 
                 points++;
 
@@ -34,7 +31,7 @@ class Solution {
                     int nextRow = urdl[i] + currentRow, nextColumn = urdl[i + 1] + currentColumn;
                     if (nextRow >= 0 && nextColumn >= 0 && nextRow < height && nextColumn < width && !visited[nextRow][nextColumn]) {
                         visited[nextRow][nextColumn] = true;
-                        currentQueue.push_back({nextRow, nextColumn});
+                        lesserQueue.push({grid[nextRow][nextColumn], {nextRow, nextColumn}});
                     }
                 }
             }

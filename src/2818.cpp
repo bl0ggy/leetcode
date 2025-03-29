@@ -13,10 +13,25 @@ class Solution {
 
         vector<int> numsPrimes(n, 0);
         for (int i = 0; i < n; i++) {
-            if (nums[i] < 2) {
+            int num = nums[i];
+            if (primes[num]) {
+                numsPrimes[i] = 1;
                 continue;
             }
-            numsPrimes[i] = countPrimes(nums[i], primes);
+            for (int prime = 2; prime <= sqrt(num); prime++) {
+                if (num % prime == 0) {
+                    numsPrimes[i]++;
+                    while (num % prime == 0) {
+                        num /= prime;
+                    }
+                }
+                while (!primes[prime + 1]) {
+                    prime++;
+                }
+            }
+            if (primes[num]) {
+                numsPrimes[i]++;
+            }
         }
 
         vector<int> numsWindows(n, 0);

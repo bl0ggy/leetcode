@@ -4,41 +4,28 @@ class Solution {
   public:
     vector<int> largestDivisibleSubset(vector<int> &nums) {
         int size = nums.size();
-        if (size == 1) {
-            return nums;
-        }
-
         sort(nums.begin(), nums.end());
-        set<int> ans;
-        for (int i = 0; i < size - 1; i++) {
-            set<int> current{nums[i]};
-            recurse(nums, i, current, ans);
-        }
-
-        return vector<int>(ans.begin(), ans.end());
-    }
-
-    void recurse(vector<int> &nums, int index, set<int> &current, set<int> &ans) {
-        if (index >= nums.size()) {
-            if (current.size() > ans.size()) {
-                ans = current;
+        vector<int> ans;
+        vector<int> longest(size, 1), previous(size, -1);
+        int longestIndex = 0;
+        for (int i = 1; i < size; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] % nums[j] == 0 && longest[i] < longest[j] + 1) {
+                    longest[i] = longest[j] + 1;
+                    previous[i] = j;
+                }
             }
-            return;
-        }
-
-        // Skip
-        recurse(nums, index + 1, current, ans);
-
-        // Add if % = 0
-        int num = nums[index];
-        for (auto n : current) {
-            if ((n % num) * (num % n) != 0) {
-                return;
+            if (longest[i] > longest[longestIndex]) {
+                longestIndex = i;
             }
         }
-        current.insert(nums[index]);
-        recurse(nums, index + 1, current, ans);
-        current.erase(nums[index]);
+
+        while (longestIndex >= 0) {
+            ans.push_back(nums[longestIndex]);
+            longestIndex = previous[longestIndex];
+        }
+        sort(ans.begin(), ans.end());
+        return ans;
     }
 };
 
@@ -54,8 +41,12 @@ int main() {
             {1, 2, 4, 8},
             {1, 2, 4, 8},
         },
-        // Submission test cases
         // My test cases
+        // Submission test cases
+        {
+            {4, 8, 240},
+            {4, 8, 10, 240},
+        },
     });
 
     Main main;

@@ -5,18 +5,23 @@ class Solution {
     int countSymmetricIntegers(int low, int high) {
         int count = 0;
         for (int value = low; value <= high; value++) {
-            string valueStr = to_string(value);
-            if (valueStr.length() % 2 == 1) {
+            if (value < 10) {
                 continue;
-            }
-            int n = valueStr.length() / 2;
-            int a = 0, b = 0;
-            for (int i = 0; i < n; i++) {
-                a += valueStr[i] - '0';
-                b += valueStr[n + i] - '0';
-            }
-            if (a == b) {
-                count++;
+            } else if (value < 100) {
+                int mod = value % 10;
+                if (mod == (value / 10)) {
+                    count++;
+                }
+            } else if (value < 1000) {
+                continue;
+            } else if (value < 10000) {
+                int vLow = value % 100;
+                int vHigh = value / 100;
+                int modLow = vLow % 10;
+                int modHigh = vHigh % 10;
+                if ((modLow + vLow / 10) == (modHigh + vHigh / 10)) {
+                    count++;
+                }
             }
         }
         return count;

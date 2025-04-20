@@ -3,31 +3,24 @@
 class Solution {
   public:
     long long countFairPairs(vector<int> &nums, int lower, int upper) {
-        long long fairPairs = 0;
-        int numsSize = nums.size();
         sort(nums.begin(), nums.end());
-        int left = 0, right = numsSize - 1;
-        while (left < right) {
-            int sum = nums[left] + nums[right];
-            if (sum <= upper) {
-                fairPairs += right - left;
-                left++;
-            } else {
-                right--;
-            }
-        }
-        left = 0, right = numsSize - 1;
-        while (left < right) {
-            int sum = nums[left] + nums[right];
-            if (lower > sum) {
-                fairPairs -= right - left;
-                left++;
-            } else {
-                right--;
-            }
-        }
+        return count(nums, upper) - count(nums, lower - 1);
+    }
 
-        return fairPairs;
+    long long count(vector<int> &nums, int num) {
+        long long count = 0;
+        int size = nums.size();
+        int left = 0, right = size - 1;
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+            if (sum <= num) {
+                count += right - left;
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return count;
     }
 
     // Double loop, too slow

@@ -5,19 +5,25 @@ class Solution {
     vector<int> maxSlidingWindow(vector<int> &nums, int k) {
         int size = nums.size();
         vector<int> answer(size - k + 1);
-        map<int, int> values;
-        for (int i = 0; i < k; i++) {
-            values[nums[i]]++;
-        }
-        for (int i = k; i < size; i++) {
-            answer[i - k] = values.rbegin()->first;
-            values[nums[i - k]]--;
-            values[nums[i]]++;
-            if (values[nums[i - k]] == 0) {
-                values.erase(nums[i - k]);
+        deque<int> queue;
+
+        for (int i = 0; i < size; i++) {
+            int num = nums[i];
+
+            while (!queue.empty() && queue.back() < num) {
+                queue.pop_back();
+            }
+            queue.push_back(num);
+
+            if (i >= k && nums[i - k] == queue.front()) {
+                queue.pop_front();
+            }
+
+            if (i >= k - 1) {
+                answer[i - k + 1] = queue.front();
             }
         }
-        answer[size - k] = values.rbegin()->first;
+
         return answer;
     }
 };
